@@ -1,0 +1,12 @@
+export const base = 'family'
+export const Query = `${base}/Query`
+export const Total = `${base}/Total`
+export const Add = `${base}/Add`
+export const Edit = `${base}/Edit`
+export const Get = `${base}/Get`
+export const GetPerson = `${base}/GetPerson`
+export const Del = `${base}/Del`
+export const Active = `${base}/Active`
+export const Open = `${base}/Open`
+export const Close = `${base}/Close`
+export const GetUser = `getUser`
