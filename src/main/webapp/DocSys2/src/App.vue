@@ -7,19 +7,19 @@
           <div class="layout-nav">
             <MenuItem name="1">
               <Icon type="ios-navigate"></Icon>
-              Item 1
+              综合管理
             </MenuItem>
             <MenuItem name="2">
               <Icon type="ios-keypad"></Icon>
-              Item 2
+              系统管理
             </MenuItem>
             <MenuItem name="3">
               <Icon type="ios-analytics"></Icon>
-              Item 3
+              用户管理
             </MenuItem>
             <MenuItem name="4">
               <Icon type="ios-paper"></Icon>
-              Item 4
+              退出
             </MenuItem>
           </div>
         </Menu>
@@ -32,9 +32,9 @@
                 <Icon type="ios-navigate"></Icon>
                 Item 1
               </template>
-              <MenuItem name="1-1">Option 1</MenuItem>
-              <MenuItem name="1-2">Option 2</MenuItem>
-              <MenuItem name="1-3">Option 3</MenuItem>
+              <MenuItem name="1-1" to="/Option1">Option 1</MenuItem>
+              <MenuItem name="1-2" to="/DocList">DocList</MenuItem>
+              <MenuItem name="1-3" to="/Option1">Option 3</MenuItem>
             </Submenu>
             <Submenu name="2">
               <template slot="title">
@@ -55,14 +55,7 @@
           </Menu>
         </Sider>
         <Layout :style="{padding: '0 24px 24px'}">
-          <Breadcrumb :style="{margin: '24px 0'}">
-            <BreadcrumbItem>Home</BreadcrumbItem>
-            <BreadcrumbItem>Components</BreadcrumbItem>
-            <BreadcrumbItem>Layout</BreadcrumbItem>
-          </Breadcrumb>
-          <Content :style="{padding: '24px', minHeight: '500px', background: '#fff'}">
-            Content
-          </Content>
+          <router-view/>
           <Footer class="layout-footer-center">2011-2016 &copy; TalkingData</Footer>
         </Layout>
       </Layout>
@@ -70,9 +63,9 @@
   </div>
 </template>
 <script>
-  export default {
+export default {
 
-  }
+}
 </script>
 <style scoped>
   .layout{
