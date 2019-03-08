@@ -5,15 +5,15 @@
       <BreadcrumbItem>Components</BreadcrumbItem>
       <BreadcrumbItem>Layout</BreadcrumbItem>
     </Breadcrumb>
-    <Content :style="{padding: '24px', minHeight: '800px', background: '#fff'}">
-      Option1
+    <Content :style="{padding: '24px', minHeight: '500px', background: '#fff'}">
+      DocList
     </Content>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'DocList'
 }
 </script>
 

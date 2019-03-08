@@ -7,15 +7,22 @@ export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
-    {
-      path: '/Option1',
-      name: 'Option1',
-      component: () => import('./views/Option1.vue')
+    { path: '/',
+      component: () => import('./views/Welcome.vue')
     },
     {
-      path: '/DocList',
-      name: 'DocList',
-      component: () => import('./views/DocList.vue')
+      path: '/First',
+      component: () => import('./views/Main.vue'),
+      children: [
+        {
+          path: 'DocList',
+          component: () => import(/* webpackChunkName: "group-first" */ './views/DocList.vue')
+        },
+        {
+          path: 'Option1',
+          component: () => import(/* webpackChunkName: "group-first" */ './views/Option1.vue')
+        }
+      ]
     }
   ]
 })
