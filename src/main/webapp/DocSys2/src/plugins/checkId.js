@@ -36,12 +36,15 @@ export default function IdentityCodeValid (code) {
     82: '澳门',
     91: '国外'
   }
-  var pass = true
+  var tip = ''
+  // var pass = true
 
   if (!code || !/^\d{6}(18|19|20)?\d{2}(0[1-9]|1[012])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(code)) {
-    pass = false
+    tip = '身份证号格式错误'
+    // pass = false
   } else if (!city[code.substr(0, 2)]) {
-    pass = false
+    tip = '地址编码错误'
+    // pass = false
   } else {
     if (code.length === 18) {
       code = code.split('')
@@ -55,10 +58,11 @@ export default function IdentityCodeValid (code) {
         wi = factor[i]
         sum += ai * wi
       }
-      if (parity[sum % 11] !== code[17]) {
-        pass = false
+      if (parity[sum % 11] + '' !== code[17] + '') {
+        tip = '校验位错误'
+        // pass = false
       }
     }
   }
-  return pass
+  return tip
 }

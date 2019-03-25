@@ -14,19 +14,19 @@
           </Col>
           <Col span="8">
             <FormItem label="人员姓名" prop="name">
-              <Input v-model="formValidate.name" placeholder="请输入姓名" maxlength="20"></Input>
+              <Input type="text" v-model="formValidate.name" placeholder="请输入姓名" :maxlength="20"></Input>
             </FormItem>
           </Col>
           <Col span="8">
             <FormItem label="证件号码" prop="number">
-              <Input v-model="formValidate.number" placeholder="请输入18位身份证号码" maxlength="18"></Input>
+              <Input v-model="formValidate.number" placeholder="请输入18位身份证号码" :maxlength="18"></Input>
             </FormItem>
           </Col>
         </Row>
         <Row>
           <Col span="8">
             <FormItem label="联系电话" prop="phone">
-              <Input v-model="formValidate.phone" placeholder="请输入11位手机号码" maxlength="11"></Input>
+              <Input v-model="formValidate.phone" placeholder="请输入11位手机号码" :maxlength="11"></Input>
             </FormItem>
           </Col>
           <Col span="16">
@@ -79,7 +79,7 @@
           </Col>
           <Col span="8">
             <FormItem label="退休年月" prop="retire">
-              <Input v-model="formValidate.retire" placeholder="请输入6位退休年月" maxlength="6"></Input>
+              <Input v-model="formValidate.retire" placeholder="请输入6位退休年月" :maxlength="6"></Input>
             </FormItem>
           </Col>
         </Row>
@@ -133,10 +133,11 @@ export default {
       if (!value) {
         callback(new Error('请输入18位身份证号码'))
       } else if (/^\d{18}$|^\d{17}(\d|X)$/.test(value)) {
-        if (IdentityCodeValid(value) || value === '000000000000000000') {
+        var tip = IdentityCodeValid(value)
+        if (tip === '' || value === '000000000000000000') {
           callback()
         } else {
-          callback(new Error('身份证号码错误，请进行核实'))
+          callback(new Error(tip))
         }
       } else {
         callback(new Error('身份证号码应为18位，如末尾的X需要大写'))
