@@ -5,9 +5,9 @@
         <Icon type="ios-navigate"></Icon>
         Item 1
       </template>
-      <MenuItem name="1-1" to="/First/Option1">Option 1</MenuItem>
-      <MenuItem name="1-2" to="/First/DocList">DocList</MenuItem>
-      <MenuItem name="1-3" to="/First/Option1">Option 3</MenuItem>
+      <MenuItem name="1-1" to="/File/Option1">新增档案</MenuItem>
+      <MenuItem name="1-2" to="/File/DocList">档案查询</MenuItem>
+      <MenuItem name="1-3" to="/File/Option1">Option 3</MenuItem>
     </Submenu>
     <Submenu name="2">
       <template slot="title">
@@ -29,7 +29,7 @@
 </template>
 <script>
 export default {
-  name: 'MenuLeft'
+  name: 'File'
 }
 </script>
 

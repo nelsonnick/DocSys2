@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-import MenuTop from './components/MenuTop.vue'
+import MenuTop from './components/Menu/MenuTop.vue'
 export default {
   name: 'app',
   components: {

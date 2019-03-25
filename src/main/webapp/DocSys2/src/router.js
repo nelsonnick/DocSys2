@@ -11,16 +11,33 @@ export default new Router({
       component: () => import('./views/Welcome.vue')
     },
     {
-      path: '/First',
+      path: '/File',
+      component: () => import('./views/Main.vue'),
+      children: [
+        { path: '',
+          component: () => import(/* webpackChunkName: "group-file" */ './views/File/Index.vue')
+        },
+        {
+          path: 'Add',
+          component: () => import(/* webpackChunkName: "group-file" */ './views/File/Add.vue')
+        },
+        {
+          path: 'Query',
+          component: () => import(/* webpackChunkName: "group-file" */ './views/File/Query.vue')
+        }
+      ]
+    },
+    {
+      path: '/Person',
       component: () => import('./views/Main.vue'),
       children: [
         {
-          path: 'DocList',
-          component: () => import(/* webpackChunkName: "group-first" */ './views/DocList.vue')
+          path: 'Add',
+          component: () => import(/* webpackChunkName: "group-person" */ './views/File/Add.vue')
         },
         {
-          path: 'Option1',
-          component: () => import(/* webpackChunkName: "group-first" */ './views/Option1.vue')
+          path: 'Query',
+          component: () => import(/* webpackChunkName: "group-person" */ './views/File/Query.vue')
         }
       ]
     }

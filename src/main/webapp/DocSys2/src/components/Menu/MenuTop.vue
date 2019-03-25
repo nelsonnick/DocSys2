@@ -1,26 +1,38 @@
 <template>
-  <Menu mode="horizontal" theme="dark" active-name="1">
+  <Menu mode="horizontal" theme="dark" active-name="0">
     <div class="layout-logo"></div>
     <div class="layout-nav">
-      <MenuItem name="0" to="/">
+      <MenuItem name="0" to="/Main">
         <Icon type="ios-navigate"></Icon>
         首页
       </MenuItem>
-      <MenuItem name="1" to="/First">
+      <MenuItem name="1" to="/File">
         <Icon type="ios-navigate"></Icon>
-        综合管理
+        档案管理
       </MenuItem>
-      <MenuItem name="2">
+      <MenuItem name="2" to="/Person">
         <Icon type="ios-keypad"></Icon>
-        系统管理
+        人员管理
       </MenuItem>
-      <MenuItem name="3">
+      <MenuItem name="3" to="/User">
         <Icon type="ios-analytics"></Icon>
-        个人中心
+        用户管理
       </MenuItem>
-      <MenuItem name="4">
+      <MenuItem name="4" to="/Department">
+        <Icon type="ios-analytics"></Icon>
+        部门管理
+      </MenuItem>
+      <MenuItem name="5" to="/Power">
+        <Icon type="ios-analytics"></Icon>
+        权限管理
+      </MenuItem>
+      <MenuItem name="6" to="/Info">
+        <Icon type="ios-analytics"></Icon>
+        个人信息
+      </MenuItem>
+      <MenuItem name="7">
         <Icon type="ios-paper"></Icon>
-        退出
+        退出系统
       </MenuItem>
     </div>
   </Menu>
@@ -43,7 +55,7 @@ export default {
     left: 20px;
   }
   .layout-nav{
-    width: 600px;
+    width: 1200px;
     margin: 0 auto;
     margin-right: 20px;
   }
