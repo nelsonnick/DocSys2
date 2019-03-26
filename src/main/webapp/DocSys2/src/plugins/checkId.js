@@ -1,5 +1,5 @@
 export default function IdentityCodeValid (code) {
-  var city = {
+  let city = {
     11: '北京',
     12: '天津',
     13: '河北',
@@ -36,7 +36,7 @@ export default function IdentityCodeValid (code) {
     82: '澳门',
     91: '国外'
   }
-  var tip = ''
+  let tip = ''
   // var pass = true
 
   if (!code || !/^\d{6}(18|19|20)?\d{2}(0[1-9]|1[012])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(code)) {
@@ -48,12 +48,12 @@ export default function IdentityCodeValid (code) {
   } else {
     if (code.length === 18) {
       code = code.split('')
-      var factor = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2]
-      var parity = [1, 0, 'X', 9, 8, 7, 6, 5, 4, 3, 2]
-      var sum = 0
-      var ai = 0
-      var wi = 0
-      for (var i = 0; i < 17; i++) {
+      let factor = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2]
+      let parity = [1, 0, 'X', 9, 8, 7, 6, 5, 4, 3, 2]
+      let sum = 0
+      let ai = 0
+      let wi = 0
+      for (let i = 0; i < 17; i++) {
         ai = code[i]
         wi = factor[i]
         sum += ai * wi
