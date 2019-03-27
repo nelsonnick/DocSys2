@@ -22,8 +22,8 @@ export default new Router({
           component: () => import(/* webpackChunkName: "group-file" */ './views/File/Add.vue')
         },
         {
-          path: 'Query',
-          component: () => import(/* webpackChunkName: "group-file" */ './views/File/Query.vue')
+          path: 'List',
+          component: () => import(/* webpackChunkName: "group-file" */ './views/File/List.vue')
         }
       ]
     },
@@ -40,8 +40,8 @@ export default new Router({
           component: () => import(/* webpackChunkName: "group-file" */ './views/Department/Add.vue')
         },
         {
-          path: 'Query',
-          component: () => import(/* webpackChunkName: "group-file" */ './views/Department/Query.vue')
+          path: 'List',
+          component: () => import(/* webpackChunkName: "group-file" */ './views/Department/List.vue')
         }
       ]
     },
@@ -54,8 +54,8 @@ export default new Router({
           component: () => import(/* webpackChunkName: "group-person" */ './views/File/Add.vue')
         },
         {
-          path: 'Query',
-          component: () => import(/* webpackChunkName: "group-person" */ './views/File/Query.vue')
+          path: 'List',
+          component: () => import(/* webpackChunkName: "group-person" */ './views/File/List.vue')
         }
       ]
     }

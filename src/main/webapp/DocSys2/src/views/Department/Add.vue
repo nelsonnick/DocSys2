@@ -31,7 +31,7 @@
           </Col>
           <Col span="8">
             <FormItem>
-              <Button type="primary" @click="handleSubmit('formValidate')">保存</Button>
+              <Button type="primary" @click="handleSubmit('formValidate')" :disabled="dis">保存</Button>
               <Button @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button>
             </FormItem>
           </Col>
@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import * as API from './API.js'
+import axios from 'axios'
 export default {
   data () {
     const validateName = (rule, value, callback) => {
@@ -66,6 +68,7 @@ export default {
       }
     }
     return {
+      dis: false,
       formValidate: {
         name: '',
         phone: '',
@@ -88,12 +91,43 @@ export default {
     handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
-
-          this.$Message.success('Success!')
-
-
+          this.dis = true
+          this.$Loading.start()
+          axios.get(API.add, {
+            params: {
+              name: this.formValidate.name,
+              phone: this.formValidate.phone,
+              address: this.formValidate.address
+            }
+          }).then(res => {
+            console.log(res)
+            if (res.data === 'OK') {
+              this.$Loading.finish()
+              this.$Message.success('新增成功!')
+              this.$Notice.success({
+                title: '操作完成!',
+                desc: '部门：' + this.formValidate.name + '已保存！'
+              })
+              this.$refs[name].resetFields()
+              setTimeout(() => {
+                this.$router.push({path: '/Department/Add'})
+              }, 1000)
+            } else {
+              this.dis = false
+              this.$Loading.error()
+              this.$Notice.error({
+                title: res.data
+              })
+            }
+          }).catch(res => {
+            this.dis = false
+            this.$Loading.error()
+            this.$Notice.error({
+              title: '服务器内部错误，无法保存部门信息!'
+            })
+          })
         } else {
-          this.$Message.error('Fail!')
+          this.$Message.error('请核实填写的信息!')
         }
       })
     },

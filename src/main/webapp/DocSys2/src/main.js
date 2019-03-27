@@ -3,8 +3,6 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './plugins/iview.js'
-import api from './plugins/http/index'
-Vue.use(api)
 
 Vue.config.productionTip = false
 

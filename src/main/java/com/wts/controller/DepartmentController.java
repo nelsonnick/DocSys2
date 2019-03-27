@@ -14,9 +14,7 @@ public class DepartmentController extends Controller {
 
 
     public void add() {
-        System.out.println(get("name"));
-        System.out.println(get("phone"));
-        System.out.println(get("address"));
+        getResponse().addHeader("Access-Control-Allow-Origin", "*");
         Department department = new Department();
         department.set("name",get("name")).set("phone",get("phone")).set("address",get("address")).save();
         renderText("OK");
