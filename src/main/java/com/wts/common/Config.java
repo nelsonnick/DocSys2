@@ -9,6 +9,8 @@ import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.server.undertow.UndertowServer;
 import com.jfinal.template.Engine;
 import com.wts.controller.*;
+import com.wts.entity.model._MappingKit;
+
 /**
  * Config class
  *
@@ -48,7 +50,7 @@ public class Config extends JFinalConfig {
         ActiveRecordPlugin arp = new ActiveRecordPlugin(dp);
         arp.setShowSql(false);
         me.add(arp);
-//        _MappingKit.mapping(arp);
+        _MappingKit.mapping(arp);
     }
 
     @Override
