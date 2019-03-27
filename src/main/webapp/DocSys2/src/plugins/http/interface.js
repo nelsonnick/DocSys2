@@ -5,6 +5,12 @@ import axios from './api'
  */
 
 // 单独导出
+export const DepartmentAdd = (name, phone, address) => {
+  return axios({
+    url: `/department/add?name=${name}&phone=${phone}&address=${address}`,
+    method: 'get'
+  })
+}
 export const query = (queryURL, keyword, pageCurrent, pageSize) => {
   return axios({
     url: `${queryURL}?keyword=${keyword}&pageCurrent=${pageCurrent}&pageSize=${pageSize}`,
@@ -34,6 +40,7 @@ export const upload = data => {
 
 // 默认全部导出
 export default {
+  DepartmentAdd,
   query,
   total,
   list,

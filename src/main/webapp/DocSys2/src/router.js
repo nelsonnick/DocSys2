@@ -12,7 +12,7 @@ export default new Router({
     },
     {
       path: '/File',
-      component: () => import('./views/Main.vue'),
+      component: () => import('./views/File/Main.vue'),
       children: [
         { path: '',
           component: () => import(/* webpackChunkName: "group-file" */ './views/File/Index.vue')
@@ -27,9 +27,27 @@ export default new Router({
         }
       ]
     },
+
+    {
+      path: '/Department',
+      component: () => import('./views/Department/Main.vue'),
+      children: [
+        { path: '',
+          component: () => import(/* webpackChunkName: "group-file" */ './views/Department/Index.vue')
+        },
+        {
+          path: 'Add',
+          component: () => import(/* webpackChunkName: "group-file" */ './views/Department/Add.vue')
+        },
+        {
+          path: 'Query',
+          component: () => import(/* webpackChunkName: "group-file" */ './views/Department/Query.vue')
+        }
+      ]
+    },
     {
       path: '/Person',
-      component: () => import('./views/Main.vue'),
+      component: () => import('./views/File/Main.vue'),
       children: [
         {
           path: 'Add',

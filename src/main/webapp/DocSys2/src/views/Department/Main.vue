@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import MenuLeft from '../components/Menu/File.vue'
+import MenuLeft from '../../components/Menu/Department'
 export default {
   name: 'Main',
   components: {

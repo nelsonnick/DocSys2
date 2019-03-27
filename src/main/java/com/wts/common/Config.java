@@ -36,6 +36,8 @@ public class Config extends JFinalConfig {
 //        开发环境及上线环境
         String base = "";
         me.add(base + "/", MainController.class);
+        me.add(base + "/department", DepartmentController.class);
+
     }
 
     @Override
