@@ -7,12 +7,12 @@
     </div>
     <div class="right">
       <Button-group>
-        <Button type="ghost" @click="goQuery">
-          <Icon type="search"></Icon>
+        <Button type="primary" @click="goQuery">
+          <Icon type="md-search"></Icon>
           搜索
         </Button>
-        <Button type="ghost" @click="goRefresh">
-          <Icon type="refresh"></Icon>
+        <Button @click="goRefresh">
+          <Icon type="md-refresh"></Icon>
           重置
         </Button>
       </Button-group>

@@ -86,7 +86,7 @@
         total: API.Total,
         keyword: '',
         pageList: [],
-        pageTotal: '',
+        total: '',
         index: '',
         border: false,
         stripe: false,
@@ -266,13 +266,13 @@
       },
       saveCurrent (pageCurrent) {
         this.$store.commit('save', {
-          pageCurrent: pageCurrent
+          current: pageCurrent
         })
       },
       CurrentAndKeyword (keyword, pageCurrent) {
         this.$store.commit('save', {
           keyword: keyword,
-          pageCurrent: pageCurrent
+          current: pageCurrent
         })
       },
       goEdit (index) {

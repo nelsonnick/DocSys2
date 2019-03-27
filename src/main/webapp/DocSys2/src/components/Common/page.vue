@@ -1,89 +1,68 @@
 <template>
   <div class="page">
-    <Page :total="pageTotal" :current="pageCurrent" :page-size="pageSize" @on-page-size-change="sizeChange" @on-change="pageChange" show-sizer show-elevator show-total></Page>
+    <Page :total="total" :current="current" :page-size="pageSize" @on-page-size-change="onPageSizeChange" @on-change="onChange" show-sizer show-elevator show-total></Page>
   </div>
 </template>
 <script>
-  import axios from 'axios'
-  import * as BASE from './Base.js'
-
-  export default {
-    props: ['queryURL', 'totalURL', 'keyword'],
-    data () {
-      return {
-        pageCurrent: 1,
-        pageSize: 10,
-        pageTotal: 0,
-        pageList: []
-      }
-    },
-    created: function () {
-      this.getLists(this.queryURL, this.totalURL, this.keyword, this.pageCurrent, this.pageSize)
-    },
-    methods: {
-      getLists (queryURL, totalURL, keyword, pageCurrent, pageSize) {
-        axios.get(queryURL, {
-          params: {
-            keyword: keyword,
-            pageCurrent: pageCurrent,
-            pageSize: pageSize
-          }
-        }).then(res => {
-          if (res.data.toString() === 'illegal' || res.data.toString() === 'overdue') {
-          } else {
-            axios.get(totalURL, {
-              params: {
-                keyword: keyword
-              }
-            }).then(response => {
-              if (response.data.toString() === 'illegal' || response.data.toString() === 'overdue') {
-                this.$Notice.error({
-                  title: '登录过期或非法操作!'
-                })
-                window.location.href = BASE.base
-              } else {
-                this.pageList = res.data
-                this.pageTotal = response.data
-                this.$emit('goList', this.pageList, this.pageTotal)
-              }
-            }).catch(response => {
-              this.$Loading.error()
-              this.$Notice.error({
-                title: '服务器内部错误!'
-              })
-            })
-          }
-        }).catch(res => {
-          this.$Loading.error()
-          this.$Notice.error({
-            title: '服务器内部错误!'
+export default {
+  props: ['queryURL', 'totalURL', 'keyword'],
+  data () {
+    return {
+      total: 0,
+      current: 1,
+      pageSize: 10,
+      pageList: []
+    }
+  },
+  // created: function () {
+  //   this.getLists(this.queryURL, this.totalURL, this.keyword, this.current, this.pageSize)
+  // },
+  methods: {
+    getLists (queryURL, totalURL, keyword, pageCurrent, pageSize) {
+      this.$api.query(queryURL, keyword, pageCurrent, pageSize).then(res => {
+        if (res.rc === 0) {
+          this.$api.total(totalURL, keyword).then(re => {
+            if (re.rc === 0) {
+              this.pageList = res.data.item
+              this.total = re.data.item
+              this.$emit('goList', this.pageList, this.total)
+            }else {
+              this.$Message.info(re.desc);
+            }
+          }).catch(erro => {
+            this.$Message.info(erro);
           })
-        })
-      },
-      sizeChange (value) {
-        this.pageSize = value
-        this.pageCurrent = 1
-        this.$emit('savePageCurrent', this.pageCurrent)
-        this.getLists(this.queryURL, this.totalURL, this.keyword, this.pageCurrent, this.pageSize)
-      },
-      pageChange (value) {
-        this.pageCurrent = value
-        this.$emit('savePageCurrent', this.pageCurrent)
-        this.getLists(this.queryURL, this.totalURL, this.keyword, this.pageCurrent, this.pageSize)
-      },
-      query (keyword) {
-        this.keyword = keyword
-        this.pageCurrent = 1
-        this.$emit('savePageCurrentAndKeyword', this.keyword, this.pageCurrent)
-        this.getLists(this.queryURL, this.totalURL, this.keyword, this.pageCurrent, this.pageSize)
-      },
-      queryNoChange (keyword) {
-        this.keyword = keyword
-        this.$emit('savePageCurrentAndKeyword', this.keyword, this.pageCurrent)
-        this.getLists(this.queryURL, this.totalURL, this.keyword, this.pageCurrent, this.pageSize)
-      }
+        }else {
+          this.$Message.info(res.desc);
+        }
+      }).catch(error => {
+        this.$Message.info(error);
+      })
+    },
+    onPageSizeChange (value) {
+      this.pageSize = value
+      this.current = 1
+      this.$emit('savePageCurrent', this.current)
+      this.getLists(this.queryURL, this.totalURL, this.keyword, this.current, this.pageSize)
+    },
+    onChange (value) {
+      this.current = value
+      this.$emit('savePageCurrent', this.current)
+      this.getLists(this.queryURL, this.totalURL, this.keyword, this.current, this.pageSize)
+    },
+    query (keyword) {
+      this.keyword = keyword
+      this.current = 1
+      this.$emit('savePageCurrentAndKeyword', this.keyword, this.current)
+      this.getLists(this.queryURL, this.totalURL, this.keyword, this.current, this.pageSize)
+    },
+    queryNoChange (keyword) {
+      this.keyword = keyword
+      this.$emit('savePageCurrentAndKeyword', this.keyword, this.current)
+      this.getLists(this.queryURL, this.totalURL, this.keyword, this.current, this.pageSize)
     }
   }
+}
 </script>
 <style>
   .page{
