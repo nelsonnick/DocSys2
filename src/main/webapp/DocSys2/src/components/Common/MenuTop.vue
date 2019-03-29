@@ -1,36 +1,36 @@
 <template>
-  <Menu mode="horizontal" theme="dark" active-name="0">
+  <Menu mode="horizontal" theme="dark" :active-name="menuTop" @on-select="onSelect">
     <div class="layout-logo"></div>
     <div class="layout-nav">
-      <MenuItem name="0" to="/Main">
+      <MenuItem name="Main" to="/Main">
         <Icon type="ios-navigate"></Icon>
         首页
       </MenuItem>
-      <MenuItem name="1" to="/File">
+      <MenuItem name="File" to="/File">
         <Icon type="ios-navigate"></Icon>
         档案管理
       </MenuItem>
-      <MenuItem name="2" to="/Person">
+      <MenuItem name="Person" to="/Person">
         <Icon type="ios-keypad"></Icon>
         人员管理
       </MenuItem>
-      <MenuItem name="3" to="/User">
+      <MenuItem name="User" to="/User">
         <Icon type="ios-analytics"></Icon>
         用户管理
       </MenuItem>
-      <MenuItem name="4" to="/Department">
+      <MenuItem name="Department" to="/Department">
         <Icon type="ios-analytics"></Icon>
         部门管理
       </MenuItem>
-      <MenuItem name="5" to="/Power">
+      <MenuItem name="Power" to="/Power">
         <Icon type="ios-analytics"></Icon>
         权限管理
       </MenuItem>
-      <MenuItem name="6" to="/Info">
+      <MenuItem name="Info" to="/Info">
         <Icon type="ios-analytics"></Icon>
         个人信息
       </MenuItem>
-      <MenuItem name="7">
+      <MenuItem name="Exit">
         <Icon type="ios-paper"></Icon>
         退出系统
       </MenuItem>
@@ -39,7 +39,17 @@
 </template>
 <script>
 export default {
-  name: 'MenuTop'
+  name: 'MenuTop',
+  data () {
+    return {
+      menuTop: 'Main'
+    }
+  },
+  methods: {
+    onSelect (name) {
+      this.menuTop = name
+    }
+  }
 }
 </script>
 

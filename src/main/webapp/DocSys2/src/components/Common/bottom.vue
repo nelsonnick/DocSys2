@@ -35,7 +35,6 @@
 </template>
 <script>
 import axios from 'axios'
-import * as BASE from './Base.js'
 export default {
   props: ['queryURL', 'totalURL'],
   data () {
@@ -49,9 +48,18 @@ export default {
       pageList: []
     }
   },
-  // created: function () {
-  //   this.getLists(this.queryURL, this.totalURL, this.keyword, this.current, this.pageSize)
-  // },
+  created: function () {
+    this.$store.commit('setKeyword', {
+      keyword: ''
+    })
+    this.$store.commit('setPageCurrent', {
+      pageCurrent: 1
+    })
+    this.$store.commit('setPageSize', {
+      pageSize: 10
+    })
+    this.getLists(this.queryURL, this.totalURL, this.$store.state.keyword, this.$store.state.pageCurrent, this.$store.state.pageSize)
+  },
   watch: {
     border: function (val) {
       this.$emit('changeBorder', val)
@@ -65,41 +73,32 @@ export default {
   },
   methods: {
     getLists (queryURL, totalURL, keyword, pageCurrent, pageSize) {
+      this.$emit('changeData')
       axios.get(queryURL, {
         params: {
           keyword: keyword,
-          current: pageCurrent,
+          pageCurrent: pageCurrent,
           pageSize: pageSize
         }
       }).then(res => {
-        if (res.data.toString() === 'illegal' || res.data.toString() === 'overdue') {
-        } else {
-          axios.get(totalURL, {
-            params: {
-              keyword: keyword
-            }
-          }).then(response => {
-            if (response.data.toString() === 'illegal' || response.data.toString() === 'overdue') {
-              this.$Notice.error({
-                title: '登录过期或非法操作!'
-              })
-              window.location.href = BASE.base
-            } else {
-              this.pageList = res.data
-              this.pageTotal = response.data
-              this.$emit('goList', this.pageList, this.total)
-            }
-          }).catch(response => {
-            this.$Loading.error()
-            this.$Notice.error({
-              title: '服务器内部错误!'
-            })
+        axios.get(totalURL, {
+          params: {
+            keyword: keyword
+          }
+        }).then(response => {
+          this.pageList = res.data
+          this.pageTotal = response.data
+          this.$emit('changeList', this.pageList, this.total)
+        }).catch(response => {
+          this.$Loading.error()
+          this.$Notice.error({
+            title: '服务器内部错误,无法获取数量!'
           })
-        }
+        })
       }).catch(res => {
         this.$Loading.error()
         this.$Notice.error({
-          title: '服务器内部错误!'
+          title: '服务器内部错误，无法获取列表数据!'
         })
       })
     },
@@ -107,32 +106,33 @@ export default {
     onPageSizeChange (value) {
       this.pageSize = value
       this.pageCurrent = 1
-      this.$store.commit('savePageSize', {
+      this.$store.commit('setPageSize', {
         pageSize: value
       })
-      this.$store.commit('savePageCurrent', {
+      this.$store.commit('setPageCurrent', {
         pageCurrent: 1
       })
-      console.log(this.$store.state.pageSize)
-      console.log(this.$store.state.pageCurrent)
+      this.getLists(this.queryURL, this.totalURL, this.$store.state.keyword, this.$store.state.pageCurrent, this.$store.state.pageSize)
     },
     // 切换页码
     onChange (value) {
       this.pageCurrent = value
-      this.$store.commit('savePageCurrent', {
-        pageCurrent: 1
+      this.$store.commit('setPageCurrent', {
+        pageCurrent: value
       })
+      this.getLists(this.queryURL, this.totalURL, this.$store.state.keyword, this.$store.state.pageCurrent, this.$store.state.pageSize)
     },
     // 查询关键词
     query (keyword) {
       this.keyword = keyword
       this.pageCurrent = 1
-      this.$store.commit('saveKeyword', {
+      this.$store.commit('setKeyword', {
         keyword: keyword
       })
-      this.$store.commit('savePageCurrent', {
+      this.$store.commit('setPageCurrent', {
         pageCurrent: 1
       })
+      this.getLists(this.queryURL, this.totalURL, this.$store.state.keyword, this.$store.state.pageCurrent, this.$store.state.pageSize)
     }
   }
 }

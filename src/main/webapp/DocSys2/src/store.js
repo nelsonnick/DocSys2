@@ -10,13 +10,13 @@ export default new Vuex.Store({
     pageSize: 10
   },
   mutations: {
-    saveKeyword (state, payload) {
+    setKeyword (state, payload) {
       state.keyword = payload.keyword
     },
-    savePageCurrent (state, payload) {
+    setPageCurrent (state, payload) {
       state.pageCurrent = payload.pageCurrent
     },
-    savePageSize (state, payload) {
+    setPageSize (state, payload) {
       state.pageSize = payload.pageSize
     }
   },

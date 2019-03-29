@@ -2,7 +2,7 @@
   <div>
     <Breadcrumb :style="{margin: '24px 0'}">
       <BreadcrumbItem>部门管理</BreadcrumbItem>
-      <BreadcrumbItem>新增部门</BreadcrumbItem>
+      <BreadcrumbItem>修改部门</BreadcrumbItem>
     </Breadcrumb>
     <Content :style="{padding: '24px', minHeight: '500px', background: '#fff'}">
       <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
@@ -31,7 +31,7 @@
           </Col>
           <Col span="8">
             <FormItem>
-              <Button type="primary" @click="goSave('formValidate')" :disabled="dis">新增</Button>
+              <Button type="primary" @click="goSave('formValidate')" :disabled="dis">修改</Button>
               <Button @click="goReset('formValidate')" style="margin-left: 8px" :disabled="dis">重置</Button>
               <Button type="dashed" style="margin-left: 8px" @click="goBack" :disabled="dis">返回</Button>
             </FormItem>
@@ -88,14 +88,22 @@ export default {
       }
     }
   },
+  created: function () {
+    this.fetchData(this.$route.params.id)
+  },
+  watch: {
+    // 如果路由有变化，会再次执行该方法
+    '$route': 'fetchData'
+  },
   methods: {
     goSave (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
           this.dis = true
           this.$Loading.start()
-          axios.get(API.add, {
+          axios.get(API.edit, {
             params: {
+              id: this.$route.params.id,
               name: this.formValidate.name,
               phone: this.formValidate.phone,
               address: this.formValidate.address
@@ -103,15 +111,13 @@ export default {
           }).then(res => {
             if (res.data === 'OK') {
               this.$Loading.finish()
-              this.$Message.success('新增成功!')
+              this.$Message.success('修改成功!')
               this.$Notice.success({
                 title: '操作完成!',
                 desc: '部门：' + this.formValidate.name + '已保存！'
               })
               setTimeout(() => {
-                this.$router.push({ path: '/Department/Add' })
-                this.dis = false
-                this.$refs[name].resetFields()
+                this.$router.push({ path: '/Department/List' })
               }, 1000)
             } else {
               this.dis = false
@@ -133,10 +139,23 @@ export default {
       })
     },
     goReset (name) {
-      this.$refs[name].resetFields()
+      this.fetchData(this.$route.params.id)
     },
     goBack () {
       this.$router.push({ path: '/Department/List' })
+    },
+    fetchData (id) {
+      axios.get(API.get,
+        { params: { id: id } }
+      ).then(res => {
+        this.formValidate.name = res.data.name
+        this.formValidate.phone = res.data.phone
+        this.formValidate.address = res.data.address
+      }).catch(res => {
+        this.$Notice.error({
+          title: '服务器内部错误，无法获取数据!'
+        })
+      })
     }
   }
 }

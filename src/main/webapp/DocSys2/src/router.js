@@ -42,6 +42,10 @@ export default new Router({
         {
           path: 'List',
           component: () => import(/* webpackChunkName: "group-file" */ './views/Department/List.vue')
+        },
+        {
+          path: 'Edit/:id',
+          component: () => import(/* webpackChunkName: "group-file" */ './views/Department/Edit.vue')
         }
       ]
     },

@@ -1,2 +1,1 @@
-// export const base = '/in/'
-export const base = '/'
+export default 'http://localhost:80/'

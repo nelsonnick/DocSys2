@@ -15,12 +15,13 @@ public class LoginInterceptor implements Interceptor {
 
 	@Override
 	public void intercept(Invocation inv) {
-		HttpSession session = inv.getController().getSession();
-		if(session.getAttribute("user") == null){
-			inv.getController().redirect("/");
-		}
-		else{
-			inv.invoke();
-		}
+		inv.invoke();
+//		HttpSession session = inv.getController().getSession();
+//		if(session.getAttribute("user") == null){
+//			inv.getController().redirect("/");
+//		}
+//		else{
+//			inv.invoke();
+//		}
 	}
 }
