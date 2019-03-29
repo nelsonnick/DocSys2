@@ -34,8 +34,10 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
+import * as BASE from './Base.js'
 export default {
-  props: ['queryURL', 'totalURL', 'keyword'],
+  props: ['queryURL', 'totalURL'],
   data () {
     return {
       border: false,
@@ -63,7 +65,43 @@ export default {
   },
   methods: {
     getLists (queryURL, totalURL, keyword, pageCurrent, pageSize) {
-
+      axios.get(queryURL, {
+        params: {
+          keyword: keyword,
+          current: pageCurrent,
+          pageSize: pageSize
+        }
+      }).then(res => {
+        if (res.data.toString() === 'illegal' || res.data.toString() === 'overdue') {
+        } else {
+          axios.get(totalURL, {
+            params: {
+              keyword: keyword
+            }
+          }).then(response => {
+            if (response.data.toString() === 'illegal' || response.data.toString() === 'overdue') {
+              this.$Notice.error({
+                title: '登录过期或非法操作!'
+              })
+              window.location.href = BASE.base
+            } else {
+              this.pageList = res.data
+              this.pageTotal = response.data
+              this.$emit('goList', this.pageList, this.total)
+            }
+          }).catch(response => {
+            this.$Loading.error()
+            this.$Notice.error({
+              title: '服务器内部错误!'
+            })
+          })
+        }
+      }).catch(res => {
+        this.$Loading.error()
+        this.$Notice.error({
+          title: '服务器内部错误!'
+        })
+      })
     },
     // 切换每页条数
     onPageSizeChange (value) {
