@@ -100,7 +100,6 @@ export default {
               address: this.formValidate.address
             }
           }).then(res => {
-            console.log(res)
             if (res.data === 'OK') {
               this.$Loading.finish()
               this.$Message.success('新增成功!')
@@ -108,9 +107,10 @@ export default {
                 title: '操作完成!',
                 desc: '部门：' + this.formValidate.name + '已保存！'
               })
-              this.$refs[name].resetFields()
               setTimeout(() => {
-                this.$router.push({path: '/Department/Add'})
+                this.$router.push({ path: '/Department/Add' })
+                this.dis = false
+                this.$refs[name].resetFields()
               }, 1000)
             } else {
               this.dis = false
@@ -137,7 +137,5 @@ export default {
   }
 }
 </script>
-
 <style scoped>
-
 </style>

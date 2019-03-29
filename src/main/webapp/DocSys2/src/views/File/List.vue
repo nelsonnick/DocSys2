@@ -33,7 +33,7 @@
 </template>
 <script>
 import Search from '../../components/Common/search.vue'
-import Page from '../../components/Common/page.vue'
+import Page from '../../components/Common/bottom.vue'
 export default {
   name: 'list',
   components: { Search, Page },
@@ -65,7 +65,7 @@ export default {
                 }
               }),
               h('strong', params.row.name)
-            ]);
+            ])
           }
         },
         {
@@ -108,7 +108,7 @@ export default {
                   }
                 }
               }, 'Delete')
-            ]);
+            ])
           }
         }
       ],

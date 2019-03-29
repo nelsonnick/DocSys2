@@ -20,31 +20,32 @@
   </div>
 </template>
 <script>
-  export default {
-    data () {
-      return {
-        keyword: ''
-      }
+export default {
+  data () {
+    return {
+      keyword: ''
+    }
+  },
+  methods: {
+    goQuery () {
+      this.$emit('goQuery', this.keyword)
     },
-    methods: {
-      goQuery () {
-        this.$emit('goQuery', this.keyword)
-      },
-      goRefresh () {
-        this.keyword = ''
-        this.$emit('goQuery', this.keyword)
-      }
+    goRefresh () {
+      this.keyword = ''
+      this.$emit('goQuery', this.keyword)
     }
   }
+}
 </script>
 <style>
   .query{
-    float:right ;
+    float: right;
+    margin: 3px 0px 0px 0px
   }
   .left{
-    float:left ;
+    float: left
   }
   .right{
-    float:right ;
+    float: right
   }
 </style>

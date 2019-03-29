@@ -1,9 +1,14 @@
 <template>
   <div>
-    <Breadcrumb :style="{margin: '24px 0'}">
-      <BreadcrumbItem>部门管理</BreadcrumbItem>
-      <BreadcrumbItem>部门列表</BreadcrumbItem>
-    </Breadcrumb>
+    <Row>
+      <Col span="8">
+        <Breadcrumb :style="{margin: '24px 0'}">
+          <BreadcrumbItem>部门管理</BreadcrumbItem>
+          <BreadcrumbItem>部门列表</BreadcrumbItem>
+        </Breadcrumb>
+      </Col>
+      <Col span="16"><Search @goQuery="getQuery"/></Col>
+    </Row>
     <Table
       highlight-row
       :height="height"
@@ -14,34 +19,24 @@
       :columns="columns"
       :data="pageList">
     </Table>
-    <div class="left">
-      <Search/>
-    </div>
-    <div class="right">
-      <Page
-        ref="pages"
-        @goList="getList"
-        @savePageCurrent="saveCurrent"
-        @savePageCurrentAndKeyword="CurrentAndKeyword"
-        :queryURL="query"
-        :totalURL="total"
-        :keyword="keyword"
-      >
-      </Page>
-    </div>
+    <Bottom
+      ref="bottom"
+      @changeList="getList"
+      @changeBorder="getBorder"
+      @changeStripe="getStripe"
+      @changeSize="getSize"
+    >
+    </Bottom>
   </div>
 </template>
 <script>
 import Search from '../../components/Common/search.vue'
-import Page from '../../components/Common/page.vue'
+import Bottom from '../../components/Common/bottom.vue'
 export default {
   name: 'list',
-  components: { Search, Page },
+  components: { Search, Bottom },
   data () {
     return {
-      userName: '',
-      LocationId: '',
-      sys: false,
       active: 'person',
       name: '',
       keyword: '',
@@ -52,32 +47,23 @@ export default {
       size: 'small',
       height: 450,
       self: this,
-      addPerson: true,
       columns: [
         {
-          title: 'Name',
+          title: '部门名称',
           key: 'name',
-          render: (h, params) => {
-            return h('div', [
-              h('Icon', {
-                props: {
-                  type: 'person'
-                }
-              }),
-              h('strong', params.row.name)
-            ]);
-          }
+          width: 150
         },
         {
-          title: 'Age',
-          key: 'age'
+          title: '联系电话',
+          key: 'phone',
+          width: 150
         },
         {
-          title: 'Address',
+          title: '联系地址',
           key: 'address'
         },
         {
-          title: 'Action',
+          title: '操作',
           key: 'action',
           width: 150,
           align: 'center',
@@ -96,7 +82,7 @@ export default {
                     this.show(params.index)
                   }
                 }
-              }, 'View'),
+              }, '修改'),
               h('Button', {
                 props: {
                   type: 'error',
@@ -107,8 +93,8 @@ export default {
                     this.remove(params.index)
                   }
                 }
-              }, 'Delete')
-            ]);
+              }, '删除')
+            ])
           }
         }
       ],
@@ -137,6 +123,31 @@ export default {
     }
   },
   methods: {
+    getQuery (keyword) {
+      this.keyword = keyword
+      this.$store.commit('saveKeyword', {
+        keyword: keyword
+      })
+      this.$refs.bottom.query(keyword)
+    },
+    getList (pageList) {
+      this.pageList = pageList
+    },
+    getBorder (border) {
+      this.border = border
+    },
+    getStripe (stripe) {
+      this.stripe = stripe
+    },
+    getSize (size) {
+      if (size.toString() === 'true') {
+        this.height = 665
+        this.size = 'large'
+      } else {
+        this.height = 450
+        this.size = 'small'
+      }
+    },
     show (index) {
       this.$Modal.info({
         title: 'User Info',
@@ -150,14 +161,4 @@ export default {
 }
 </script>
 <style scoped>
-  .right {
-    margin: 15px;
-    border-radius: 4px;
-    float: right;
-  }
-  .left {
-    margin: 15px;
-    border-radius: 4px;
-    float: left;
-  }
 </style>

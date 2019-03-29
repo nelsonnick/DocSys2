@@ -66,7 +66,7 @@
 </template>
 <script>
   import Search from '../Common/search.vue'
-  import Page from '../Common/page.vue'
+  import Page from '../Common/bottom.vue'
   import Options from '../Common/options.vue'
   import * as API from './API.js'
   import * as BASE from '../Common/Base.js'
