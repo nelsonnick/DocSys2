@@ -132,6 +132,9 @@ export default {
       this.$store.commit('setPageCurrent', {
         pageCurrent: 1
       })
+      console.log(this.$store.state.keyword)
+      console.log(this.$store.state.pageCurrent)
+      console.log(this.$store.state.pageSize)
       this.getLists(this.queryURL, this.totalURL, this.$store.state.keyword, this.$store.state.pageCurrent, this.$store.state.pageSize)
     }
   }

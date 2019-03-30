@@ -103,8 +103,9 @@
           </Col>
           <Col span="8">
             <FormItem>
-              <Button type="primary" @click="handleSubmit('formValidate')">保存</Button>
-              <Button @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button>
+              <Button type="primary" @click="goSave('formValidate')" :disabled="dis">新增</Button>
+              <Button @click="goReset('formValidate')" style="margin-left: 8px" :disabled="dis">重置</Button>
+              <Button type="dashed" style="margin-left: 8px" @click="goBack" :disabled="dis">返回</Button>
             </FormItem>
           </Col>
           <Col span="8">
@@ -117,6 +118,8 @@
 </template>
 
 <script>
+import * as API from './API.js'
+import axios from 'axios'
 import IdentityCodeValid from '../../plugins/checkId'
 export default {
   data () {
@@ -162,6 +165,7 @@ export default {
       }
     }
     return {
+      dis: false,
       formValidate: {
         code: '',
         name: '',
@@ -216,17 +220,64 @@ export default {
     }
   },
   methods: {
-    handleSubmit (name) {
+    goSave (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
-          this.$Message.success('Success!')
+          this.dis = true
+          this.$Loading.start()
+          axios.get(API.add, {
+            params: {
+              code: this.formValidate.code,
+              name: this.formValidate.name,
+              number: this.formValidate.number,
+              phone: this.formValidate.phone,
+              address: this.formValidate.address,
+              reason: this.formValidate.reason,
+              source: this.formValidate.source,
+              delivery: this.formValidate.delivery,
+              check: this.formValidate.check,
+              age: this.formValidate.age,
+              retire: this.formValidate.retire,
+              inside: this.formValidate.inside,
+              desc: this.formValidate.desc
+            }
+          }).then(res => {
+            if (res.data === 'OK') {
+              this.$Loading.finish()
+              this.$Message.success('新增成功!')
+              this.$Notice.success({
+                title: '操作完成!',
+                desc: '档案：' + this.formValidate.name + '已保存！'
+              })
+              setTimeout(() => {
+                this.$router.push({ path: '/File/List' })
+                this.dis = false
+                this.$refs[name].resetFields()
+              }, 1000)
+            } else {
+              this.dis = false
+              this.$Loading.error()
+              this.$Notice.error({
+                title: res.data
+              })
+            }
+          }).catch(res => {
+            this.dis = false
+            this.$Loading.error()
+            this.$Notice.error({
+              title: '服务器内部错误，无法保存档案信息!'
+            })
+          })
         } else {
-          this.$Message.error('Fail!')
+          this.$Message.error('请核实填写的信息!')
         }
       })
     },
-    handleReset (name) {
+    goReset (name) {
       this.$refs[name].resetFields()
+    },
+    goBack () {
+      this.$router.push({ path: '/File/List' })
     }
   }
 }

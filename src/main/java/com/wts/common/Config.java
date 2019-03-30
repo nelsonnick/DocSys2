@@ -20,7 +20,7 @@ import com.wts.entity.model._MappingKit;
 public class Config extends JFinalConfig {
 
     public static void main(String[] args) {
-        UndertowServer.start(Config.class, 80, false);
+        UndertowServer.start(Config.class, 81, false);
     }
 
     @Override
@@ -37,7 +37,8 @@ public class Config extends JFinalConfig {
         String base = "";
         me.add(base + "/", MainController.class);
         me.add(base + "/api/department", DepartmentController.class);
-
+        me.add(base + "/api/user", UserController.class);
+        me.add(base + "/api/file", FileController.class);
     }
 
     @Override

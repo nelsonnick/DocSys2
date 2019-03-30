@@ -49,4 +49,12 @@ public abstract class BaseUser<M extends BaseUser<M>> extends Model<M> implement
 		return getInt("state");
 	}
 
+	public void setDepartmentId(java.lang.Integer departmentId) {
+		set("department_id", departmentId);
+	}
+	
+	public java.lang.Integer getDepartmentId() {
+		return getInt("department_id");
+	}
+
 }

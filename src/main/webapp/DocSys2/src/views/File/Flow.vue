@@ -4,11 +4,10 @@
       <Col span="6">
         <Breadcrumb :style="{margin: '24px 0'}">
           <BreadcrumbItem>档案管理</BreadcrumbItem>
-          <BreadcrumbItem>档案列表</BreadcrumbItem>
+          <BreadcrumbItem>流转列表</BreadcrumbItem>
         </Breadcrumb>
       </Col>
       <Col span="6" :style="{margin: '20px 0'}">
-        <Button type="info" @click="goAdd" long>新增</Button>
       </Col>
       <Col span="12"><Search @goQuery="getQuery"/></Col>
     </Row>
@@ -23,14 +22,11 @@
       :size="size"
       :columns="columns"
       :data="pageList">
-      <template slot-scope="{ row }" slot="code">
-        {{ row.code }}
-      </template>
       <template slot-scope="{ row }" slot="name">
-        {{row.name}}
+        {{ row.name }}
       </template>
-      <template slot-scope="{ row }" slot="number">
-        {{row.number}}
+      <template slot-scope="{ row }" slot="login">
+        {{row.login}}
       </template>
       <template slot-scope="{ row }" slot="state">
         {{row.state}}
@@ -40,7 +36,9 @@
       </template>
       <template slot-scope="{ row, index }" slot="action" >
         <Button type="primary" size="small" style="margin-right: 5px" @click="goEdit(index)" v-if="row.state.toString() === '启用'">修改</Button>
-        <Button type="success" size="small" style="margin-right: 5px"  @click="goFlow(index)" v-if="row.state.toString() === '禁用'">流转</Button>
+        <Button type="success" size="small" style="margin-right: 5px"  @click="goActive(index)" v-if="row.state.toString() === '禁用'">激活</Button>
+        <Button type="error" size="small" style="margin-right: 5px"  @click="goUnactive(index)" v-if="row.state.toString() === '启用'">注销</Button>
+        <Button type="warning" size="small" style="margin-right: 5px"  @click="goDel(index)">重置密码</Button>
       </template>
     </Table>
     <Bottom
@@ -77,19 +75,15 @@ export default {
       pageList: [],
       columns: [
         {
-          title: '档案编号',
-          slot: 'code'
-        },
-        {
           title: '人员姓名',
           slot: 'name'
         },
         {
-          title: '身份证号码',
-          slot: 'number'
+          title: '登录名称',
+          slot: 'login'
         },
         {
-          title: '档案状态',
+          title: '人员状态',
           slot: 'state',
           width: 150
         },
@@ -144,18 +138,87 @@ export default {
     },
     onRowDblclick (row, index) {
       this.$Modal.info({
-        title: `档案信息---ID:${this.pageList[index].id}---PID:${this.pageList[index].person_id}`,
-        content: `档案编号：${this.pageList[index].code}<br>用户姓名：${this.pageList[index].name}<br>身份证号码：${this.pageList[index].number}<br>档案状态：${this.pageList[index].state}<br>所属部门：${this.pageList[index].department}`
+        title: `用户信息---ID:${this.pageList[index].id}`,
+        content: `用户姓名：${this.pageList[index].name}<br>登录名称：${this.pageList[index].login}<br>人员状态：${this.pageList[index].state}<br>所属部门：${this.pageList[index].department}`
       })
     },
     goAdd () {
-      this.$router.push({ path: '/File/Add/' })
+      this.$router.push({ path: '/User/Add/' })
     },
     goEdit (index) {
-      this.$router.push({ path: '/File/Edit/' + this.pageList[index].id })
+      this.$router.push({ path: '/User/Edit/' + this.pageList[index].id })
     },
-    goFlow (index) {
-      this.$router.push({ path: '/File/Flow/' + this.pageList[index].id })
+    goDel (index) {
+      this.$Loading.start()
+      axios.get(API.del, {
+        params: {
+          id: this.pageList[index].id
+        }
+      }).then(res => {
+        if (res.data === 'OK') {
+          this.$Loading.finish()
+          this.$Message.success('删除成功!')
+          this.$refs.bottom.query(this.$store.state.keyword)
+        } else {
+          this.$Loading.error()
+          this.$Notice.error({
+            title: res.data
+          })
+        }
+      }).catch(res => {
+        this.$Loading.error()
+        this.$Notice.error({
+          title: '服务器内部错误!'
+        })
+      })
+    },
+    goActive (index) {
+      this.$Loading.start()
+      axios.get(API.active, {
+        params: {
+          id: this.pageList[index].id
+        }
+      }).then(res => {
+        if (res.data === 'OK') {
+          this.$Loading.finish()
+          this.$Message.success('激活成功!')
+          this.$refs.bottom.query(this.$store.state.keyword)
+        } else {
+          this.$Loading.error()
+          this.$Notice.error({
+            title: res.data
+          })
+        }
+      }).catch(res => {
+        this.$Loading.error()
+        this.$Notice.error({
+          title: '服务器内部错误，无法激活!'
+        })
+      })
+    },
+    goUnactive (index) {
+      this.$Loading.start()
+      axios.get(API.unactive, {
+        params: {
+          id: this.pageList[index].id
+        }
+      }).then(res => {
+        if (res.data === 'OK') {
+          this.$Loading.finish()
+          this.$Message.success('激活成功!')
+          this.$refs.bottom.query(this.$store.state.keyword)
+        } else {
+          this.$Loading.error()
+          this.$Notice.error({
+            title: res.data
+          })
+        }
+      }).catch(res => {
+        this.$Loading.error()
+        this.$Notice.error({
+          title: '服务器内部错误，无法激活!'
+        })
+      })
     }
   }
 }

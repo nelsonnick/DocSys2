@@ -10,10 +10,6 @@
         <Icon type="ios-navigate"></Icon>
         档案管理
       </MenuItem>
-      <MenuItem name="Person" to="/Person">
-        <Icon type="ios-keypad"></Icon>
-        人员管理
-      </MenuItem>
       <MenuItem name="User" to="/User">
         <Icon type="ios-analytics"></Icon>
         用户管理
@@ -21,10 +17,6 @@
       <MenuItem name="Department" to="/Department">
         <Icon type="ios-analytics"></Icon>
         部门管理
-      </MenuItem>
-      <MenuItem name="Power" to="/Power">
-        <Icon type="ios-analytics"></Icon>
-        权限管理
       </MenuItem>
       <MenuItem name="Info" to="/Info">
         <Icon type="ios-analytics"></Icon>

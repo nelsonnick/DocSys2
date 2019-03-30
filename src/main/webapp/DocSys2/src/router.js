@@ -24,6 +24,30 @@ export default new Router({
         {
           path: 'List',
           component: () => import(/* webpackChunkName: "group-file" */ './views/File/List.vue')
+        },
+        {
+          path: 'Flow',
+          component: () => import(/* webpackChunkName: "group-file" */ './views/File/Flow.vue')
+        },
+        {
+          path: 'Edit/:id',
+          component: () => import(/* webpackChunkName: "group-file" */ './views/File/Edit.vue')
+        },
+        {
+          path: 'Out/:id',
+          component: () => import(/* webpackChunkName: "group-file" */ './views/File/Out.vue')
+        },
+        {
+          path: 'In/:id',
+          component: () => import(/* webpackChunkName: "group-file" */ './views/File/In.vue')
+        },
+        {
+          path: 'Borrow/:id',
+          component: () => import(/* webpackChunkName: "group-file" */ './views/File/Borrow.vue')
+        },
+        {
+          path: 'Back/:id',
+          component: () => import(/* webpackChunkName: "group-file" */ './views/File/Back.vue')
         }
       ]
     },
@@ -33,33 +57,40 @@ export default new Router({
       component: () => import('./views/Department/Main.vue'),
       children: [
         { path: '',
-          component: () => import(/* webpackChunkName: "group-file" */ './views/Department/Index.vue')
+          component: () => import(/* webpackChunkName: "group-department" */ './views/Department/Index.vue')
         },
         {
           path: 'Add',
-          component: () => import(/* webpackChunkName: "group-file" */ './views/Department/Add.vue')
+          component: () => import(/* webpackChunkName: "group-department" */ './views/Department/Add.vue')
         },
         {
           path: 'List',
-          component: () => import(/* webpackChunkName: "group-file" */ './views/Department/List.vue')
+          component: () => import(/* webpackChunkName: "group-department" */ './views/Department/List.vue')
         },
         {
           path: 'Edit/:id',
-          component: () => import(/* webpackChunkName: "group-file" */ './views/Department/Edit.vue')
+          component: () => import(/* webpackChunkName: "group-department" */ './views/Department/Edit.vue')
         }
       ]
     },
     {
-      path: '/Person',
-      component: () => import('./views/File/Main.vue'),
+      path: '/User',
+      component: () => import('./views/User/Main.vue'),
       children: [
+        { path: '',
+          component: () => import(/* webpackChunkName: "group-department" */ './views/User/Index.vue')
+        },
         {
           path: 'Add',
-          component: () => import(/* webpackChunkName: "group-person" */ './views/File/Add.vue')
+          component: () => import(/* webpackChunkName: "group-department" */ './views/User/Add.vue')
         },
         {
           path: 'List',
-          component: () => import(/* webpackChunkName: "group-person" */ './views/File/List.vue')
+          component: () => import(/* webpackChunkName: "group-department" */ './views/User/List.vue')
+        },
+        {
+          path: 'Edit/:id',
+          component: () => import(/* webpackChunkName: "group-department" */ './views/User/Edit.vue')
         }
       ]
     }
