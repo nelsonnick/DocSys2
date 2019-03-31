@@ -2,16 +2,18 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 Vue.use(Router)
-
+let baseUrl = ''
 export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
-    { path: '/',
+    { path: baseUrl + '/',
       component: () => import('./views/Welcome.vue')
     },
-    {
-      path: '/File',
+    { path: baseUrl + '/Info',
+      component: () => import(/* webpackChunkName: "group-info" */'./views/Info/Main.vue')
+    },
+    { path: baseUrl + '/File',
       component: () => import('./views/File/Main.vue'),
       children: [
         { path: '',
@@ -38,8 +40,8 @@ export default new Router({
           component: () => import(/* webpackChunkName: "group-file" */ './views/File/Out.vue')
         },
         {
-          path: 'In/:id',
-          component: () => import(/* webpackChunkName: "group-file" */ './views/File/In.vue')
+          path: 'Resave/:id',
+          component: () => import(/* webpackChunkName: "group-file" */ './views/File/Resave.vue')
         },
         {
           path: 'Borrow/:id',
@@ -51,9 +53,7 @@ export default new Router({
         }
       ]
     },
-
-    {
-      path: '/Department',
+    { path: baseUrl + '/Department',
       component: () => import('./views/Department/Main.vue'),
       children: [
         { path: '',
@@ -73,24 +73,23 @@ export default new Router({
         }
       ]
     },
-    {
-      path: '/User',
+    { path: baseUrl + '/User',
       component: () => import('./views/User/Main.vue'),
       children: [
         { path: '',
-          component: () => import(/* webpackChunkName: "group-department" */ './views/User/Index.vue')
+          component: () => import(/* webpackChunkName: "group-user" */ './views/User/Index.vue')
         },
         {
           path: 'Add',
-          component: () => import(/* webpackChunkName: "group-department" */ './views/User/Add.vue')
+          component: () => import(/* webpackChunkName: "group-user" */ './views/User/Add.vue')
         },
         {
           path: 'List',
-          component: () => import(/* webpackChunkName: "group-department" */ './views/User/List.vue')
+          component: () => import(/* webpackChunkName: "group-user" */ './views/User/List.vue')
         },
         {
           path: 'Edit/:id',
-          component: () => import(/* webpackChunkName: "group-department" */ './views/User/Edit.vue')
+          component: () => import(/* webpackChunkName: "group-user" */ './views/User/Edit.vue')
         }
       ]
     }

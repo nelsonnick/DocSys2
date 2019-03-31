@@ -57,12 +57,12 @@ public abstract class BaseFlow<M extends BaseFlow<M>> extends Model<M> implement
 		return getStr("reason");
 	}
 
-	public void setDirection(java.lang.String direction) {
-		set("direction", direction);
+	public void setSource(java.lang.String source) {
+		set("source", source);
 	}
 	
-	public java.lang.String getDirection() {
-		return getStr("direction");
+	public java.lang.String getSource() {
+		return getStr("source");
 	}
 
 	public void setDelivery(java.lang.Integer delivery) {

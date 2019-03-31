@@ -20,7 +20,7 @@ import com.wts.entity.model._MappingKit;
 public class Config extends JFinalConfig {
 
     public static void main(String[] args) {
-        UndertowServer.start(Config.class, 81, false);
+        UndertowServer.start(Config.class, 80, false);
     }
 
     @Override

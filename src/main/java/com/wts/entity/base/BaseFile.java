@@ -49,28 +49,28 @@ public abstract class BaseFile<M extends BaseFile<M>> extends Model<M> implement
 		return getInt("department_id");
 	}
 
-	public void setFileAge(java.lang.Integer fileAge) {
-		set("file_age", fileAge);
+	public void setAge(java.lang.Integer age) {
+		set("age", age);
 	}
 	
-	public java.lang.Integer getFileAge() {
-		return getInt("file_age");
+	public java.lang.Integer getAge() {
+		return getInt("age");
 	}
 
-	public void setFileCheck(java.lang.Integer fileCheck) {
-		set("file_check", fileCheck);
+	public void setCheck(java.lang.Integer check) {
+		set("check", check);
 	}
 	
-	public java.lang.Integer getFileCheck() {
-		return getInt("file_check");
+	public java.lang.Integer getCheck() {
+		return getInt("check");
 	}
 
-	public void setFileInside(java.lang.String fileInside) {
-		set("file_inside", fileInside);
+	public void setInside(java.lang.String inside) {
+		set("inside", inside);
 	}
 	
-	public java.lang.String getFileInside() {
-		return getStr("file_inside");
+	public java.lang.String getInside() {
+		return getStr("inside");
 	}
 
 	public void setRemark(java.lang.String remark) {
@@ -79,6 +79,14 @@ public abstract class BaseFile<M extends BaseFile<M>> extends Model<M> implement
 	
 	public java.lang.String getRemark() {
 		return getStr("remark");
+	}
+
+	public void setRetire(java.lang.String retire) {
+		set("retire", retire);
+	}
+	
+	public java.lang.String getRetire() {
+		return getStr("retire");
 	}
 
 }

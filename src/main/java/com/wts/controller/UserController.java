@@ -24,7 +24,6 @@ public class UserController extends Controller {
 
     @Before(LoginInterceptor.class)
     public void getDepartment() {
-        getResponse().addHeader("Access-Control-Allow-Origin", "*");
         List<Department> departments = Department.dao.find("SELECT * FROM department");
         String str = "";
         for (Department department : departments) {
@@ -34,7 +33,6 @@ public class UserController extends Controller {
         renderJson("[" + str + "]");
     }
     public void query() {
-        getResponse().addHeader("Access-Control-Allow-Origin", "http://localhost:8080");
         renderJson(Db.paginate(
                 getParaToInt("pageCurrent"),
                 getParaToInt("pageSize"),
@@ -48,7 +46,6 @@ public class UserController extends Controller {
     }
 
     public void total() {
-        getResponse().addHeader("Access-Control-Allow-Origin", "*");
         Long count = Db.queryLong("SELECT COUNT(*) FROM user LEFT JOIN department ON user.department_id = department.id " +
                 "WHERE user.name LIKE '%" + getPara("keyword") + "%' " +
                 "OR user.login LIKE '%" + getPara("keyword") + "%' " +
@@ -57,13 +54,11 @@ public class UserController extends Controller {
     }
     @Before(LoginInterceptor.class)
     public void get() {
-        getResponse().addHeader("Access-Control-Allow-Origin", "*");
         renderJson(User.dao.findById(getPara("id")));
     }
 
     @Before({Tx.class, LoginInterceptor.class})
     public void delete() {
-        getResponse().addHeader("Access-Control-Allow-Origin", "*");
         User user = User.dao.findById(getPara("id"));
         user.delete();
         logger.warn("function:" + this.getClass().getSimpleName() + "/Delete;" + ";time:" + new Date() + ";");
@@ -72,7 +67,6 @@ public class UserController extends Controller {
 
     @Before({Tx.class, LoginInterceptor.class})
     public void add() {
-        getResponse().addHeader("Access-Control-Allow-Origin", "*");
         User user = new User();
         user.set("name",get("name")).set("login",get("login")).set("password",get("login")).set("state","1").set("department_id",get("departmentId")).save();
         logger.warn("function:" + this.getClass().getSimpleName() + "/Add;" + ";time:" + new Date() + ";");
@@ -80,7 +74,6 @@ public class UserController extends Controller {
     }
     @Before({Tx.class, LoginInterceptor.class})
     public void edit() {
-        getResponse().addHeader("Access-Control-Allow-Origin", "*");
         User user = User.dao.findById(getPara("id"));
         if (user == null) {
             renderText("要修改的信息不存在！");
@@ -95,7 +88,6 @@ public class UserController extends Controller {
     }
     @Before({Tx.class, LoginInterceptor.class})
     public void active() {
-        getResponse().addHeader("Access-Control-Allow-Origin", "*");
         User user = User.dao.findById(getPara("id"));
         if (user == null) {
             renderText("要修改的信息不存在！");
@@ -108,7 +100,6 @@ public class UserController extends Controller {
     }
     @Before({Tx.class, LoginInterceptor.class})
     public void unactive() {
-        getResponse().addHeader("Access-Control-Allow-Origin", "*");
         User user = User.dao.findById(getPara("id"));
         if (user == null) {
             renderText("要修改的信息不存在！");
@@ -121,7 +112,6 @@ public class UserController extends Controller {
     }
     @Before({Tx.class, LoginInterceptor.class})
     public void reset() {
-        getResponse().addHeader("Access-Control-Allow-Origin", "*");
         User user = User.dao.findById(getPara("id"));
         if (user == null) {
             renderText("要修改的信息不存在！");
@@ -131,5 +121,41 @@ public class UserController extends Controller {
             logger.warn("function:" + this.getClass().getSimpleName() + "/Reset;" + ";time:" + new Date() + ";");
             renderText("OK");
         }
+    }
+    @Before(LoginInterceptor.class)
+    public void getUser() {
+        if (getSessionAttr("user").equals("") || getSessionAttr("user") == null) {
+            renderText("无法识别");
+        } else {
+            renderJson(((User) getSessionAttr("user")));
+        }
+    }
+    @Before(LoginInterceptor.class)
+    public void isAdmin() {
+        if (((User) getSessionAttr("user")).getLogin().equals("0")){
+            renderText("1");
+        }else{
+            renderText("0");
+        }
+    }
+
+    @Before(LoginInterceptor.class)
+    public void alt() {
+        if (getSessionAttr("user").equals("") || getSessionAttr("user") == null) {
+            renderText("无法识别用户");
+        } else {
+            if (!get("pass2").equals(get("pass3"))) {
+                renderText("两次输入的密码不一致");
+            } else {
+                User user = ((User) getSessionAttr("user"));
+                if (!user.getPassword().equals(get("pass1"))){
+                    renderText("原始密码错误！");
+                } else {
+                    user.set("password",get("pass2")).update();
+                    renderText("OK");
+                }
+            }
+        }
+
     }
 }

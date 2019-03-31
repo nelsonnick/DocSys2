@@ -39,8 +39,11 @@
         {{row.department}}
       </template>
       <template slot-scope="{ row, index }" slot="action" >
-        <Button type="primary" size="small" style="margin-right: 5px" @click="goEdit(index)" v-if="row.state.toString() === '启用'">修改</Button>
-        <Button type="success" size="small" style="margin-right: 5px"  @click="goFlow(index)" v-if="row.state.toString() === '禁用'">流转</Button>
+        <Button type="primary" size="small" style="margin-right: 5px" @click="goEdit(index)" v-if="row.state.toString() === '在档' && row.department === department">修改</Button>
+        <Button type="error" size="small" style="margin-right: 5px" @click="goOut(index)" v-if="row.state.toString() === '在档' && row.department === department">提档</Button>
+        <Button type="warning" size="small" style="margin-right: 5px" @click="goBorrow(index)" v-if="row.state.toString() === '在档' && row.department === department">借档</Button>
+        <Button type="info" size="small" style="margin-right: 5px" @click="goBack(index)" v-if="row.state.toString() === '借档' && row.department === department">还档</Button>
+        <Button type="dash" size="small" style="margin-right: 5px" @click="goResave(index)" v-if="row.state.toString() === '提档' && row.department === department">重存</Button>
       </template>
     </Table>
     <Bottom
@@ -68,6 +71,7 @@ export default {
     return {
       queryURL: API.query,
       totalURL: API.total,
+      department: '',
       loading: true,
       border: false,
       stripe: false,
@@ -106,6 +110,7 @@ export default {
     }
   },
   created: function () {
+    this.getUser()
     this.$store.commit('setKeyword', {
       keyword: ''
     })
@@ -144,7 +149,7 @@ export default {
     },
     onRowDblclick (row, index) {
       this.$Modal.info({
-        title: `档案信息---ID:${this.pageList[index].id}---PID:${this.pageList[index].person_id}`,
+        title: `档案信息---ID:${this.pageList[index].id}---PID:${this.pageList[index].person}`,
         content: `档案编号：${this.pageList[index].code}<br>用户姓名：${this.pageList[index].name}<br>身份证号码：${this.pageList[index].number}<br>档案状态：${this.pageList[index].state}<br>所属部门：${this.pageList[index].department}`
       })
     },
@@ -154,8 +159,27 @@ export default {
     goEdit (index) {
       this.$router.push({ path: '/File/Edit/' + this.pageList[index].id })
     },
-    goFlow (index) {
-      this.$router.push({ path: '/File/Flow/' + this.pageList[index].id })
+    goBack (index) {
+      this.$router.push({ path: '/File/Back/' + this.pageList[index].id })
+    },
+    goBorrow (index) {
+      this.$router.push({ path: '/File/Borrow/' + this.pageList[index].id })
+    },
+    goOut (index) {
+      this.$router.push({ path: '/File/Out/' + this.pageList[index].id })
+    },
+    goResave (index) {
+      this.$router.push({ path: '/File/Resave/' + this.pageList[index].id })
+    },
+    getUser () {
+      axios.get(API.getUser
+      ).then(res => {
+        this.department = res.data
+      }).catch(res => {
+        this.$Notice.error({
+          title: '服务器内部错误，无法获取数据!'
+        })
+      })
     }
   }
 }

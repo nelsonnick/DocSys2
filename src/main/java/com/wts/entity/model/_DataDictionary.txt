@@ -14,29 +14,30 @@ Table: file
 ---------------+---------------+------+-----+---------+---------
  id            | INT(10)       | NO   | PRI |         | 档案序号    
  code          | VARCHAR(255)  | YES  |     |         | 档案编号    
- state         | INT(10)       | YES  |     |         | 档案状态0不在1在档
+ state         | INT(10)       | YES  |     |         | 档案状态0提档1在档2借档
  person_id     | INT(10)       | YES  |     |         | 人员序号    
  department_id | INT(10)       | YES  |     |         | 存档位置    
- file_age      | INT(10)       | YES  |     |         | 档案年龄1一直2早于3晚于4未知
- file_check    | INT(10)       | YES  |     |         | 信息整理0未整理1已整理
- file_inside   | VARCHAR(3000) | YES  |     |         | 档案所含内容  
+ age           | INT(10)       | YES  |     |         | 档案年龄1一直2早于3晚于4未知
+ check         | INT(10)       | YES  |     |         | 信息整理0未整理1已整理
+ inside        | VARCHAR(3000) | YES  |     |         | 档案所含内容  
  remark        | VARCHAR(3000) | YES  |     |         | 档案备注    
+ retire        | VARCHAR(6)    | YES  |     |         | 退休年月    
 ---------------+---------------+------+-----+---------+---------
 
 Table: flow
------------+--------------+------+-----+---------+---------
- Field     | Type         | Null | Key | Default | Remarks 
------------+--------------+------+-----+---------+---------
- id        | INT(10)      | NO   | PRI |         | 序号      
- time      | DATETIME(26) | YES  |     |         | 流转时间    
- type      | INT(10)      | YES  |     |         | 流转类型1存档2提档3借档4还档
- file_id   | INT(10)      | YES  |     |         | 档案序号    
- user_id   | INT(10)      | YES  |     |         | 用户序号    
- reason    | VARCHAR(50)  | YES  |     |         | 流转原因    
- direction | VARCHAR(50)  | YES  |     |         | 流转方向    
- delivery  | INT(10)      | YES  |     |         | 传递方式1个人2专人3邮寄4其他
- remark    | VARCHAR(999) | YES  |     |         | 备注      
------------+--------------+------+-----+---------+---------
+----------+--------------+------+-----+---------+---------
+ Field    | Type         | Null | Key | Default | Remarks 
+----------+--------------+------+-----+---------+---------
+ id       | INT(10)      | NO   | PRI |         | 序号      
+ time     | DATETIME(26) | YES  |     |         | 流转时间    
+ type     | INT(10)      | YES  |     |         | 流转类型1存档2提档3借档4还档
+ file_id  | INT(10)      | YES  |     |         | 档案序号    
+ user_id  | INT(10)      | YES  |     |         | 用户序号    
+ reason   | VARCHAR(50)  | YES  |     |         | 流转原因    
+ source   | VARCHAR(50)  | YES  |     |         | 流转方向    
+ delivery | INT(10)      | YES  |     |         | 传递方式1个人2专人3邮寄4其他
+ remark   | VARCHAR(999) | YES  |     |         | 备注      
+----------+--------------+------+-----+---------+---------
 
 Table: func
 -------+-------------+------+-----+---------+---------

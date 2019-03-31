@@ -22,23 +22,30 @@
       :size="size"
       :columns="columns"
       :data="pageList">
+      <template slot-scope="{ row }" slot="code">
+        {{ row.code }}
+      </template>
       <template slot-scope="{ row }" slot="name">
-        {{ row.name }}
+        {{row.name}}
       </template>
-      <template slot-scope="{ row }" slot="login">
-        {{row.login}}
+      <template slot-scope="{ row }" slot="number">
+        {{row.number}}
       </template>
-      <template slot-scope="{ row }" slot="state">
-        {{row.state}}
+      <template slot-scope="{ row }" slot="type">
+        {{row.type}}
+      </template>
+      <template slot-scope="{ row }" slot="time">
+        {{row.time}}
       </template>
       <template slot-scope="{ row }" slot="department">
         {{row.department}}
       </template>
+      <template slot-scope="{ row }" slot="user">
+        {{row.user}}
+      </template>
       <template slot-scope="{ row, index }" slot="action" >
-        <Button type="primary" size="small" style="margin-right: 5px" @click="goEdit(index)" v-if="row.state.toString() === '启用'">修改</Button>
-        <Button type="success" size="small" style="margin-right: 5px"  @click="goActive(index)" v-if="row.state.toString() === '禁用'">激活</Button>
-        <Button type="error" size="small" style="margin-right: 5px"  @click="goUnactive(index)" v-if="row.state.toString() === '启用'">注销</Button>
-        <Button type="warning" size="small" style="margin-right: 5px"  @click="goDel(index)">重置密码</Button>
+        <Button type="primary" size="small" style="margin-right: 5px" @click="goPrint(index)" v-if="row.type.toString() === '存档 '">打印</Button>
+        <Button type="success" size="small" style="margin-right: 5px"  @click="goPrint(index)" v-if="row.type.toString() === '提档'">打印</Button>
       </template>
     </Table>
     <Bottom
@@ -58,9 +65,8 @@
 import Search from '../../components/Common/search.vue'
 import Bottom from '../../components/Common/bottom.vue'
 import * as API from './API.js'
-import axios from 'axios'
 export default {
-  name: 'list',
+  name: 'flow',
   components: { Search, Bottom },
   data () {
     return {
@@ -75,21 +81,33 @@ export default {
       pageList: [],
       columns: [
         {
+          title: '档案编号',
+          slot: 'code'
+        },
+        {
           title: '人员姓名',
           slot: 'name'
         },
         {
-          title: '登录名称',
-          slot: 'login'
+          title: '身份证号码',
+          slot: 'number'
         },
         {
-          title: '人员状态',
-          slot: 'state',
+          title: '流转类型',
+          slot: 'type'
+        },
+        {
+          title: '流转时间',
+          slot: 'time',
           width: 150
         },
         {
           title: '所属部门',
           slot: 'department'
+        },
+        {
+          title: '操作用户',
+          slot: 'user'
         },
         {
           title: '操作',
@@ -138,87 +156,12 @@ export default {
     },
     onRowDblclick (row, index) {
       this.$Modal.info({
-        title: `用户信息---ID:${this.pageList[index].id}`,
-        content: `用户姓名：${this.pageList[index].name}<br>登录名称：${this.pageList[index].login}<br>人员状态：${this.pageList[index].state}<br>所属部门：${this.pageList[index].department}`
+        title: `流转信息---ID:${this.pageList[index].id}`,
+        content: `档案编号：${this.pageList[index].code}<br>人员姓名：${this.pageList[index].name}<br>身份证号码：${this.pageList[index].number}<br>流转类型：${this.pageList[index].type}<br>所属部门：${this.pageList[index].department}<br>操作用户：${this.pageList[index].user}`
       })
     },
-    goAdd () {
-      this.$router.push({ path: '/User/Add/' })
-    },
-    goEdit (index) {
-      this.$router.push({ path: '/User/Edit/' + this.pageList[index].id })
-    },
-    goDel (index) {
-      this.$Loading.start()
-      axios.get(API.del, {
-        params: {
-          id: this.pageList[index].id
-        }
-      }).then(res => {
-        if (res.data === 'OK') {
-          this.$Loading.finish()
-          this.$Message.success('删除成功!')
-          this.$refs.bottom.query(this.$store.state.keyword)
-        } else {
-          this.$Loading.error()
-          this.$Notice.error({
-            title: res.data
-          })
-        }
-      }).catch(res => {
-        this.$Loading.error()
-        this.$Notice.error({
-          title: '服务器内部错误!'
-        })
-      })
-    },
-    goActive (index) {
-      this.$Loading.start()
-      axios.get(API.active, {
-        params: {
-          id: this.pageList[index].id
-        }
-      }).then(res => {
-        if (res.data === 'OK') {
-          this.$Loading.finish()
-          this.$Message.success('激活成功!')
-          this.$refs.bottom.query(this.$store.state.keyword)
-        } else {
-          this.$Loading.error()
-          this.$Notice.error({
-            title: res.data
-          })
-        }
-      }).catch(res => {
-        this.$Loading.error()
-        this.$Notice.error({
-          title: '服务器内部错误，无法激活!'
-        })
-      })
-    },
-    goUnactive (index) {
-      this.$Loading.start()
-      axios.get(API.unactive, {
-        params: {
-          id: this.pageList[index].id
-        }
-      }).then(res => {
-        if (res.data === 'OK') {
-          this.$Loading.finish()
-          this.$Message.success('激活成功!')
-          this.$refs.bottom.query(this.$store.state.keyword)
-        } else {
-          this.$Loading.error()
-          this.$Notice.error({
-            title: res.data
-          })
-        }
-      }).catch(res => {
-        this.$Loading.error()
-        this.$Notice.error({
-          title: '服务器内部错误，无法激活!'
-        })
-      })
+    goPrint (index) {
+
     }
   }
 }

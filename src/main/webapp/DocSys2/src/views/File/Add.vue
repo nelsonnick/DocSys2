@@ -92,8 +92,8 @@
         </Row>
         <Row>
           <Col span="24">
-            <FormItem label="备注信息" prop="desc">
-              <Input v-model="formValidate.desc" type="textarea" :autosize="{minRows: 2,maxRows: 2}" placeholder="如有必要，请输入备注信息"></Input>
+            <FormItem label="备注信息" prop="remark">
+              <Input v-model="formValidate.remark" type="textarea" :autosize="{minRows: 2,maxRows: 2}" placeholder="如有必要，请输入备注信息"></Input>
             </FormItem>
           </Col>
         </Row>
@@ -116,7 +116,6 @@
     </Content>
   </div>
 </template>
-
 <script>
 import * as API from './API.js'
 import axios from 'axios'
@@ -179,7 +178,7 @@ export default {
         age: '1',
         retire: '',
         inside: '',
-        desc: ''
+        remark: ''
       },
       ruleValidate: {
         code: [
@@ -205,13 +204,13 @@ export default {
           { required: true, message: '档案来源为必填项', trigger: 'blur' }
         ],
         delivery: [
-          { required: true }
+          { required: true, message: '传递方式为必填项' }
         ],
         check: [
-          { required: true }
+          { required: true, message: '信息整理为必填项' }
         ],
         age: [
-          { required: true }
+          { required: true, message: '档案年龄为必填项' }
         ],
         retire: [
           { required: true, validator: validateRetire, trigger: 'blur' }
@@ -239,7 +238,7 @@ export default {
               age: this.formValidate.age,
               retire: this.formValidate.retire,
               inside: this.formValidate.inside,
-              desc: this.formValidate.desc
+              remark: this.formValidate.remark
             }
           }).then(res => {
             if (res.data === 'OK') {
@@ -247,7 +246,7 @@ export default {
               this.$Message.success('新增成功!')
               this.$Notice.success({
                 title: '操作完成!',
-                desc: '档案：' + this.formValidate.name + '已保存！'
+                desc: '档案：' + this.formValidate.code + '已保存！'
               })
               setTimeout(() => {
                 this.$router.push({ path: '/File/List' })

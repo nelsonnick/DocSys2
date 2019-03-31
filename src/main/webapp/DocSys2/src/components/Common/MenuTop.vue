@@ -6,19 +6,19 @@
         <Icon type="ios-navigate"></Icon>
         首页
       </MenuItem>
-      <MenuItem name="File" to="/File">
+      <MenuItem name="File" to="/File" v-cloak v-if="notAdmin">
         <Icon type="ios-navigate"></Icon>
         档案管理
       </MenuItem>
-      <MenuItem name="User" to="/User">
+      <MenuItem name="User" to="/User" v-cloak v-if="admin">
         <Icon type="ios-analytics"></Icon>
         用户管理
       </MenuItem>
-      <MenuItem name="Department" to="/Department">
+      <MenuItem name="Department" to="/Department" v-cloak v-if="admin">
         <Icon type="ios-analytics"></Icon>
         部门管理
       </MenuItem>
-      <MenuItem name="Info" to="/Info">
+      <MenuItem name="Info" to="/Info" v-cloak v-if="notAdmin">
         <Icon type="ios-analytics"></Icon>
         个人信息
       </MenuItem>
@@ -30,16 +30,39 @@
   </Menu>
 </template>
 <script>
+import * as API from './API.js'
+import axios from 'axios'
 export default {
   name: 'MenuTop',
   data () {
     return {
-      menuTop: 'Main'
+      menuTop: 'Main',
+      admin: false,
+      notAdmin: false
     }
+  },
+  created: function () {
+    axios.get(API.isAdmin).then(res => {
+      if (res.data.toString() === '1') {
+        this.admin = true
+        this.notAdmin = false
+      } else {
+        this.admin = false
+        this.notAdmin = true
+      }
+    }).catch(res => {
+      this.$Loading.error()
+      this.$Notice.error({
+        title: '服务器内部错误，无法获取用户!'
+      })
+    })
   },
   methods: {
     onSelect (name) {
       this.menuTop = name
+      if (name.toString() === 'Exit') {
+        window.location.href = '/logout'
+      }
     }
   }
 }

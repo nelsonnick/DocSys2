@@ -1,5 +1,5 @@
 import baseUrl from '../../components/Common/Base'
-export const base = baseUrl + 'api/user'
+export const base = baseUrl + '/api/user'
 export const query = `${base}/query`
 export const total = `${base}/total`
 export const add = `${base}/add`
