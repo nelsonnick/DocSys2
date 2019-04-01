@@ -19,11 +19,8 @@ public class _MappingKit {
 		arp.addMapping("department", "id", Department.class);
 		arp.addMapping("file", "id", File.class);
 		arp.addMapping("flow", "id", Flow.class);
-		arp.addMapping("func", "id", Func.class);
 		arp.addMapping("person", "id", Person.class);
 		arp.addMapping("personchange", "id", Personchange.class);
-		// Composite Primary Key order: user_id,department_id,func_id
-		arp.addMapping("power", "user_id,department_id,func_id", Power.class);
 		arp.addMapping("user", "id", User.class);
 	}
 }

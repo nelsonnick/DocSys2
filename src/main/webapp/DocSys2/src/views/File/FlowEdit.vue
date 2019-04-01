@@ -2,7 +2,7 @@
   <div>
     <Breadcrumb :style="{margin: '24px 0'}">
       <BreadcrumbItem>档案管理</BreadcrumbItem>
-      <BreadcrumbItem>重存档案</BreadcrumbItem>
+      <BreadcrumbItem>修改流转信息</BreadcrumbItem>
     </Breadcrumb>
     <Content :style="{padding: '24px', minHeight: '500px', background: '#fff'}">
       <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
@@ -37,13 +37,13 @@
         </Row>
         <Row>
           <Col span="8">
-            <FormItem label="重存原因" prop="reason">
-              <Input v-model="formValidate.reason" placeholder="请输入重存原因"></Input>
+            <FormItem label="流转原因" prop="reason">
+              <Input v-model="formValidate.reason" placeholder="请输入流转原因"></Input>
             </FormItem>
           </Col>
           <Col span="8">
-            <FormItem label="档案来源" prop="source">
-              <Input v-model="formValidate.source" placeholder="请输入档案来源"></Input>
+            <FormItem label="档案方向" prop="source">
+              <Input v-model="formValidate.source" placeholder="请输入档案方向"></Input>
             </FormItem>
           </Col>
           <Col span="8">
@@ -105,7 +105,7 @@
           </Col>
           <Col span="8">
             <FormItem>
-              <Button type="primary" @click="goSave('formValidate')" :disabled="dis">重存</Button>
+              <Button type="primary" @click="goSave('formValidate')" :disabled="dis">保存</Button>
               <Button @click="goReset('formValidate')" style="margin-left: 8px" :disabled="dis">重置</Button>
               <Button type="dashed" style="margin-left: 8px" @click="goBack" :disabled="dis">返回</Button>
             </FormItem>
@@ -234,7 +234,7 @@ export default {
         if (valid) {
           this.dis = true
           this.$Loading.start()
-          axios.get(API.resave, {
+          axios.get(API.editFlow, {
             params: {
               id: this.$route.params.id,
               reason: this.formValidate.reason,
@@ -250,7 +250,7 @@ export default {
                 desc: '档案：' + this.formValidate.code + '已重存！'
               })
               setTimeout(() => {
-                this.$router.push({ path: '/File/List' })
+                this.$router.push({ path: '/File/Flow' })
                 this.dis = false
                 this.$refs[name].resetFields()
               }, 1000)
@@ -277,10 +277,10 @@ export default {
       this.fetchData(this.$route.params.id)
     },
     goBack () {
-      this.$router.push({ path: '/File/List' })
+      this.$router.push({ path: '/File/Flow' })
     },
     fetchData (id) {
-      axios.get(API.get,
+      axios.get(API.getFlow,
         { params: { id: id } }
       ).then(res => {
         this.formValidate.code = res.data.code
@@ -293,6 +293,9 @@ export default {
         this.formValidate.retire = res.data.retire
         this.formValidate.inside = res.data.inside
         this.formValidate.remark = res.data.remark
+        this.formValidate.reason = res.data.reason
+        this.formValidate.source = res.data.source
+        this.formValidate.delivery = res.data.delivery
       }).catch(res => {
         this.$Notice.error({
           title: '服务器内部错误，无法获取数据!'

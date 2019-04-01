@@ -17,11 +17,11 @@ Table: file
  state         | INT(10)       | YES  |     |         | 档案状态0提档1在档2借档
  person_id     | INT(10)       | YES  |     |         | 人员序号    
  department_id | INT(10)       | YES  |     |         | 存档位置    
- age           | INT(10)       | YES  |     |         | 档案年龄1一直2早于3晚于4未知
+ age           | INT(10)       | YES  |     |         | 档案年龄1一致2早于3晚于4未知
  check         | INT(10)       | YES  |     |         | 信息整理0未整理1已整理
+ retire        | VARCHAR(6)    | YES  |     |         | 退休年月    
  inside        | VARCHAR(3000) | YES  |     |         | 档案所含内容  
  remark        | VARCHAR(3000) | YES  |     |         | 档案备注    
- retire        | VARCHAR(6)    | YES  |     |         | 退休年月    
 ---------------+---------------+------+-----+---------+---------
 
 Table: flow
@@ -30,23 +30,13 @@ Table: flow
 ----------+--------------+------+-----+---------+---------
  id       | INT(10)      | NO   | PRI |         | 序号      
  time     | DATETIME(26) | YES  |     |         | 流转时间    
- type     | INT(10)      | YES  |     |         | 流转类型1存档2提档3借档4还档
+ type     | INT(10)      | YES  |     |         | 流转类型1存档2提档3借档4还档5重存
  file_id  | INT(10)      | YES  |     |         | 档案序号    
  user_id  | INT(10)      | YES  |     |         | 用户序号    
  reason   | VARCHAR(50)  | YES  |     |         | 流转原因    
  source   | VARCHAR(50)  | YES  |     |         | 流转方向    
  delivery | INT(10)      | YES  |     |         | 传递方式1个人2专人3邮寄4其他
- remark   | VARCHAR(999) | YES  |     |         | 备注      
 ----------+--------------+------+-----+---------+---------
-
-Table: func
--------+-------------+------+-----+---------+---------
- Field | Type        | Null | Key | Default | Remarks 
--------+-------------+------+-----+---------+---------
- id    | INT(10)     | NO   | PRI |         | 功能序号    
- name  | VARCHAR(20) | YES  |     |         | 功能名称    
- level | INT(10)     | YES  |     |         | 功能层级123 
--------+-------------+------+-----+---------+---------
 
 Table: person
 ---------+-------------+------+-----+---------+---------
@@ -55,7 +45,6 @@ Table: person
  id      | INT(10)     | NO   | PRI |         | 人员序号    
  number  | VARCHAR(18) | YES  |     |         | 证件号码    
  name    | VARCHAR(20) | YES  |     |         | 人员姓名    
- sex     | INT(10)     | YES  |     |         | 人员性别1男2女
  phone   | VARCHAR(20) | YES  |     |         | 联系电话    
  address | VARCHAR(50) | YES  |     |         | 联系地址    
 ---------+-------------+------+-----+---------+---------
@@ -70,15 +59,6 @@ Table: personchange
  time      | DATETIME(26)  | YES  |     |         | 变更时间    
  content   | VARCHAR(3000) | YES  |     |         | 变更前内容   
 -----------+---------------+------+-----+---------+---------
-
-Table: power
----------------+---------+------+-----+---------+---------
- Field         | Type    | Null | Key | Default | Remarks 
----------------+---------+------+-----+---------+---------
- user_id       | INT(10) | NO   | PRI |         | 用户序号    
- department_id | INT(10) | NO   | PRI |         | 部门序号    
- func_id       | INT(10) | NO   | PRI |         | 功能序号    
----------------+---------+------+-----+---------+---------
 
 Table: user
 ---------------+-------------+------+-----+---------+---------

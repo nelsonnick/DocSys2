@@ -33,14 +33,6 @@ public abstract class BasePerson<M extends BasePerson<M>> extends Model<M> imple
 		return getStr("name");
 	}
 
-	public void setSex(java.lang.Integer sex) {
-		set("sex", sex);
-	}
-	
-	public java.lang.Integer getSex() {
-		return getInt("sex");
-	}
-
 	public void setPhone(java.lang.String phone) {
 		set("phone", phone);
 	}

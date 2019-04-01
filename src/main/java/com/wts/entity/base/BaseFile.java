@@ -65,6 +65,14 @@ public abstract class BaseFile<M extends BaseFile<M>> extends Model<M> implement
 		return getInt("check");
 	}
 
+	public void setRetire(java.lang.String retire) {
+		set("retire", retire);
+	}
+	
+	public java.lang.String getRetire() {
+		return getStr("retire");
+	}
+
 	public void setInside(java.lang.String inside) {
 		set("inside", inside);
 	}
@@ -79,14 +87,6 @@ public abstract class BaseFile<M extends BaseFile<M>> extends Model<M> implement
 	
 	public java.lang.String getRemark() {
 		return getStr("remark");
-	}
-
-	public void setRetire(java.lang.String retire) {
-		set("retire", retire);
-	}
-	
-	public java.lang.String getRetire() {
-		return getStr("retire");
 	}
 
 }

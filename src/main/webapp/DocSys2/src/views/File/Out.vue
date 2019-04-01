@@ -14,36 +14,36 @@
           </Col>
           <Col span="8">
             <FormItem label="人员姓名" prop="name">
-              <Input type="text" v-model="formValidate.name" placeholder="请输入姓名" :maxlength="20" disabled>></Input>
+              <Input type="text" v-model="formValidate.name" placeholder="请输入姓名" :maxlength="20" disabled></Input>
             </FormItem>
           </Col>
           <Col span="8">
             <FormItem label="证件号码" prop="number">
-              <Input v-model="formValidate.number" placeholder="请输入18位身份证号码" :maxlength="18" disabled>></Input>
+              <Input v-model="formValidate.number" placeholder="请输入18位身份证号码" :maxlength="18" disabled></Input>
             </FormItem>
           </Col>
         </Row>
         <Row>
           <Col span="8">
             <FormItem label="联系电话" prop="phone">
-              <Input v-model="formValidate.phone" placeholder="请输入11位手机号码" :maxlength="11" disabled>></Input>
+              <Input v-model="formValidate.phone" placeholder="请输入11位手机号码" :maxlength="11" disabled></Input>
             </FormItem>
           </Col>
           <Col span="16">
             <FormItem label="联系地址" prop="address">
-              <Input v-model="formValidate.address" placeholder="请输入联系地址" disabled>></Input>
+              <Input v-model="formValidate.address" placeholder="请输入联系地址" disabled></Input>
             </FormItem>
           </Col>
         </Row>
         <Row>
           <Col span="8">
             <FormItem label="提档原因" prop="reason">
-              <Input v-model="formValidate.reason" placeholder="请输入提档原因" >></Input>
+              <Input v-model="formValidate.reason" placeholder="请输入提档原因" ></Input>
             </FormItem>
           </Col>
           <Col span="8">
             <FormItem label="档案去向" prop="source" >
-              <Input v-model="formValidate.source" placeholder="请输入档案去向" >></Input>
+              <Input v-model="formValidate.source" placeholder="请输入档案去向" ></Input>
             </FormItem>
           </Col>
           <Col span="8">
@@ -60,7 +60,7 @@
         <Row>
           <Col span="8">
             <FormItem label="信息整理" prop="check">
-              <Select v-model="formValidate.check" placeholder="请选择信息整理情况" disabled>>
+              <Select v-model="formValidate.check" placeholder="请选择信息整理情况" disabled>
                 <Option value="1">已完成</Option>
                 <Option value="2">未完成</Option>
                 <Option value="3">整理中</Option>
@@ -69,7 +69,7 @@
           </Col>
           <Col span="8">
             <FormItem label="档案年龄" prop="age">
-              <Select v-model="formValidate.age" placeholder="请选择档案年龄" disabled>>
+              <Select v-model="formValidate.age" placeholder="请选择档案年龄" disabled>
                 <Option value="1">与身份证一致</Option>
                 <Option value="2">早于身份证</Option>
                 <Option value="3">晚于身份证</Option>
@@ -79,21 +79,21 @@
           </Col>
           <Col span="8">
             <FormItem label="退休年月" prop="retire">
-              <Input v-model="formValidate.retire" placeholder="请输入6位退休年月" :maxlength="6" disabled>></Input>
+              <Input v-model="formValidate.retire" placeholder="请输入6位退休年月" :maxlength="6" disabled></Input>
             </FormItem>
           </Col>
         </Row>
         <Row>
           <Col span="24">
-            <FormItem label="档案材料" prop="inside" disabled>
-              <Input v-model="formValidate.inside" type="textarea" :autosize="{minRows: 2,maxRows: 2}" placeholder="如有必要，请输入档案所含材料"></Input>
+            <FormItem label="档案材料" prop="inside">
+              <Input v-model="formValidate.inside" type="textarea" :autosize="{minRows: 2,maxRows: 2}" disabled placeholder="如有必要，请输入档案所含材料"></Input>
             </FormItem>
           </Col>
         </Row>
         <Row>
           <Col span="24">
             <FormItem label="备注信息" prop="remark">
-              <Input v-model="formValidate.remark" type="textarea" :autosize="{minRows: 2,maxRows: 2}" placeholder="如有必要，请输入备注信息"></Input>
+              <Input v-model="formValidate.remark" type="textarea" :autosize="{minRows: 2,maxRows: 2}" disabled placeholder="如有必要，请输入备注信息"></Input>
             </FormItem>
           </Col>
         </Row>
@@ -281,7 +281,6 @@ export default {
       axios.get(API.get,
         { params: { id: id } }
       ).then(res => {
-        console.log(res.data)
         this.formValidate.code = res.data.code
         this.formValidate.name = res.data.name
         this.formValidate.number = res.data.number

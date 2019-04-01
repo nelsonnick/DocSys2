@@ -8,6 +8,7 @@ import com.wts.entity.model.*;
 import com.wts.interceptor.LoginInterceptor;
 import org.apache.log4j.Logger;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -58,12 +59,13 @@ public class FileController extends Controller {
     @Before({Tx.class, LoginInterceptor.class})
     public void add() {
         if (Person.dao.find("SELECT * FROM person WHERE number="+get("number")).size() == 0){
+            Person person = new Person();
+            person.set("name",get("name"))
+                    .set("number",get("number"))
+                    .set("phone",get("phone"))
+                    .set("address",get("address"));
             if(File.dao.find("SELECT * FROM file WHERE code="+get("code")+" AND department_id=" +((User) getSessionAttr("user")).get("department_id")).size() ==0){
-                Person person = new Person();
-                person.set("name",get("name"))
-                        .set("number",get("number"))
-                        .set("phone",get("phone"))
-                        .set("address",get("address")).save();
+                person.save();
                 File file = new File();
                 file.set("code",get("code"))
                         .set("age",get("age"))
@@ -80,7 +82,10 @@ public class FileController extends Controller {
                         .set("source",get("source"))
                         .set("delivery",get("delivery"))
                         .set("source",get("source"))
+                        .set("time",new Date())
+                        .set("file_id",file.get("id"))
                         .set("user_id", ((User) getSessionAttr("user")).get("id")).save();
+                renderText("OK");
             }else{
                 renderText("该档案编号在当前部门已存在");
             }
@@ -103,13 +108,14 @@ public class FileController extends Controller {
                         .set("source",get("source"))
                         .set("delivery",get("delivery"))
                         .set("source",get("source"))
+                        .set("time",new Date())
+                        .set("file_id",file.get("id"))
                         .set("user_id", ((User) getSessionAttr("user")).get("id")).save();
+                renderText("OK");
             }else{
                 renderText("该档案编号在当前部门已存在");
             }
         }
-        logger.warn("function:" + this.getClass().getSimpleName() + "/Add;" + ";time:" + new Date() + ";");
-        renderText("OK");
     }
     @Before({Tx.class, LoginInterceptor.class})
     public void edit() {
@@ -121,6 +127,12 @@ public class FileController extends Controller {
             if (person == null) {
                 renderText("要修改的人员不存在！");
             }else{
+                Personchange pc = new Personchange();
+                pc.set("time", new Date())
+                        .set("person_id",person.get("id"))
+                        .set("user_id",((User) getSessionAttr("user")).get("id"))
+                        .set("content",person.toJson())
+                        .save();
                 person.set("name",get("name"))
                         .set("number",get("number"))
                         .set("phone",get("phone"))
@@ -151,6 +163,8 @@ public class FileController extends Controller {
                     .set("source",get("source"))
                     .set("delivery",get("delivery"))
                     .set("source",get("source"))
+                    .set("time",new Date())
+                    .set("file_id",file.get("id"))
                     .set("user_id", ((User) getSessionAttr("user")).get("id")).save();
             renderText("OK");
         }
@@ -168,6 +182,8 @@ public class FileController extends Controller {
                     .set("source",get("source"))
                     .set("delivery",get("delivery"))
                     .set("source",get("source"))
+                    .set("time",new Date())
+                    .set("file_id",file.get("id"))
                     .set("user_id", ((User) getSessionAttr("user")).get("id")).save();
             renderText("OK");
         }
@@ -185,6 +201,8 @@ public class FileController extends Controller {
                     .set("source",get("source"))
                     .set("delivery",get("delivery"))
                     .set("source",get("source"))
+                    .set("time",new Date())
+                    .set("file_id",file.get("id"))
                     .set("user_id", ((User) getSessionAttr("user")).get("id")).save();
             renderText("OK");
         }
@@ -202,6 +220,8 @@ public class FileController extends Controller {
                     .set("source",get("source"))
                     .set("delivery",get("delivery"))
                     .set("source",get("source"))
+                    .set("time",new Date())
+                    .set("file_id",file.get("id"))
                     .set("user_id", ((User) getSessionAttr("user")).get("id")).save();
             renderText("OK");
         }
@@ -210,4 +230,5 @@ public class FileController extends Controller {
     public void getUser() {
         renderText(Department.dao.findById(((User) getSessionAttr("user")).getDepartmentId()).getName());
     }
+
 }

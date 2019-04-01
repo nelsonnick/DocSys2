@@ -73,12 +73,4 @@ public abstract class BaseFlow<M extends BaseFlow<M>> extends Model<M> implement
 		return getInt("delivery");
 	}
 
-	public void setRemark(java.lang.String remark) {
-		set("remark", remark);
-	}
-	
-	public java.lang.String getRemark() {
-		return getStr("remark");
-	}
-
 }

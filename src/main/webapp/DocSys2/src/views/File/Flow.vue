@@ -44,8 +44,9 @@
         {{row.user}}
       </template>
       <template slot-scope="{ row, index }" slot="action" >
-        <Button type="primary" size="small" style="margin-right: 5px" @click="goPrint(index)" v-if="row.type.toString() === '存档 '">打印</Button>
-        <Button type="success" size="small" style="margin-right: 5px"  @click="goPrint(index)" v-if="row.type.toString() === '提档'">打印</Button>
+        <Button type="primary" size="small" style="margin-right: 5px" @click="goPrintIn(index)" v-if="row.type.toString() === '存档 ' && row.department === department">打印存档</Button>
+        <Button type="success" size="small" style="margin-right: 5px"  @click="goPrintOut(index)" v-if="row.type.toString() === '提档' && row.department === department">打印提档</Button>
+        <Button type="success" size="small" style="margin-right: 5px"  @click="goPrintBorrow(index)" v-if="row.type.toString() === '借档' && row.department === department">打印借档</Button>
       </template>
     </Table>
     <Bottom
@@ -65,13 +66,15 @@
 import Search from '../../components/Common/search.vue'
 import Bottom from '../../components/Common/bottom.vue'
 import * as API from './API.js'
+import axios from 'axios'
 export default {
   name: 'flow',
   components: { Search, Bottom },
   data () {
     return {
-      queryURL: API.query,
-      totalURL: API.total,
+      queryURL: API.queryFlow,
+      totalURL: API.totalFlow,
+      department: '',
       loading: true,
       border: false,
       stripe: false,
@@ -118,6 +121,7 @@ export default {
     }
   },
   created: function () {
+    this.getUser()
     this.$store.commit('setKeyword', {
       keyword: ''
     })
@@ -160,8 +164,24 @@ export default {
         content: `档案编号：${this.pageList[index].code}<br>人员姓名：${this.pageList[index].name}<br>身份证号码：${this.pageList[index].number}<br>流转类型：${this.pageList[index].type}<br>所属部门：${this.pageList[index].department}<br>操作用户：${this.pageList[index].user}`
       })
     },
-    goPrint (index) {
-
+    goPrintIn (index) {
+      window.location.href = API.printIn + '?id=' + this.pageList[index].id
+    },
+    goPrintOut (index) {
+      window.location.href = API.printOut + '?id=' + this.pageList[index].id
+    },
+    goPrintBorrow (index) {
+      window.location.href = API.printBorrow + '?id=' + this.pageList[index].id
+    },
+    getUser () {
+      axios.get(API.getUser
+      ).then(res => {
+        this.department = res.data
+      }).catch(res => {
+        this.$Notice.error({
+          title: '服务器内部错误，无法获取数据!'
+        })
+      })
     }
   }
 }
