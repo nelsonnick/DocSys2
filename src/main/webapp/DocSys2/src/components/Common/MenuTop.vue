@@ -4,7 +4,7 @@
     <div class="layout-nav">
       <MenuItem name="Main" to="/Main">
         <Icon type="ios-navigate"></Icon>
-        首页
+        当前用户：{{name}}
       </MenuItem>
       <MenuItem name="File" to="/File" v-cloak v-if="notAdmin">
         <Icon type="ios-navigate"></Icon>
@@ -36,6 +36,7 @@ export default {
   name: 'MenuTop',
   data () {
     return {
+      name: '',
       menuTop: 'Main',
       admin: false,
       notAdmin: false
@@ -56,6 +57,14 @@ export default {
         title: '服务器内部错误，无法获取用户!'
       })
     })
+    axios.get(API.name).then(res => {
+      this.name = res.data.toString()
+    }).catch(res => {
+      this.$Loading.error()
+      this.$Notice.error({
+        title: '服务器内部错误，无法获取用户姓名!'
+      })
+    })
   },
   methods: {
     onSelect (name) {
@@ -70,7 +79,7 @@ export default {
 
 <style scoped>
   .layout-logo{
-    width: 100px;
+    width: 1px;
     height: 30px;
     background: #5b6270;
     border-radius: 3px;

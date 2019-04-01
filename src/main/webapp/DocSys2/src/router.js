@@ -4,7 +4,8 @@ import Router from 'vue-router'
 Vue.use(Router)
 let baseUrl = ''
 export default new Router({
-  mode: 'history',
+  mode: 'hash',
+  // mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     { path: baseUrl + '/',
@@ -50,6 +51,10 @@ export default new Router({
         {
           path: 'Back/:id',
           component: () => import(/* webpackChunkName: "group-file" */ './views/File/Back.vue')
+        },
+        {
+          path: 'FlowEdit/:id',
+          component: () => import(/* webpackChunkName: "group-file" */ './views/File/FlowEdit.vue')
         }
       ]
     },

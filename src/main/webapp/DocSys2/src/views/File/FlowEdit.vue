@@ -247,7 +247,7 @@ export default {
               this.$Message.success('重存成功!')
               this.$Notice.success({
                 title: '操作完成!',
-                desc: '档案：' + this.formValidate.code + '已重存！'
+                desc: '档案：' + this.formValidate.code + '已修改流转信息！'
               })
               setTimeout(() => {
                 this.$router.push({ path: '/File/Flow' })
@@ -295,7 +295,7 @@ export default {
         this.formValidate.remark = res.data.remark
         this.formValidate.reason = res.data.reason
         this.formValidate.source = res.data.source
-        this.formValidate.delivery = res.data.delivery
+        this.formValidate.delivery = res.data.delivery.toString()
       }).catch(res => {
         this.$Notice.error({
           title: '服务器内部错误，无法获取数据!'

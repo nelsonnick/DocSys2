@@ -20,7 +20,7 @@ import java.util.Date;
  */
 public class FileController extends Controller {
     private static Logger logger = Logger.getLogger(File.class);
-
+    @Before({Tx.class, LoginInterceptor.class})
     public void query() {
         renderJson(Db.paginate(
                 getParaToInt("pageCurrent"),
@@ -38,7 +38,7 @@ public class FileController extends Controller {
                         "OR file.code LIKE '%" + getPara("keyword") + "%' " +
                         "ORDER BY file.id DESC").getList());
     }
-
+    @Before({Tx.class, LoginInterceptor.class})
     public void total() {
         Long count = Db.queryLong("SELECT COUNT(*) FROM file LEFT JOIN department ON file.department_id = department.id LEFT JOIN person ON file.person_id = person.id " +
                 "WHERE person.name LIKE '%" + getPara("keyword") + "%' " +
@@ -47,7 +47,7 @@ public class FileController extends Controller {
                 "OR file.code LIKE '%" + getPara("keyword") + "%' ");
         renderText(count.toString());
     }
-    @Before(LoginInterceptor.class)
+    @Before({Tx.class, LoginInterceptor.class})
     public void get() {
         renderJson(Db.findFirst("SELECT file.id, file.code,file.age,file.check,file.state,file.inside,file.remark,file.retire," +
                         "person.id AS person,person.name,person.number,person.phone,person.address," +
@@ -55,7 +55,6 @@ public class FileController extends Controller {
                 "FROM file LEFT JOIN department ON file.department_id = department.id LEFT JOIN person ON file.person_id = person.id " +
                         "WHERE file.id =" + get("id")));
     }
-
     @Before({Tx.class, LoginInterceptor.class})
     public void add() {
         if (Person.dao.find("SELECT * FROM person WHERE number="+get("number")).size() == 0){
@@ -226,7 +225,7 @@ public class FileController extends Controller {
             renderText("OK");
         }
     }
-    @Before(LoginInterceptor.class)
+    @Before({Tx.class, LoginInterceptor.class})
     public void getUser() {
         renderText(Department.dao.findById(((User) getSessionAttr("user")).getDepartmentId()).getName());
     }

@@ -14,7 +14,7 @@ import java.util.List;
 
 
 /**
- * DepartmentController class
+ * UserController class
  *
  * @author wts
  * @date 2019/3/27
@@ -32,6 +32,7 @@ public class UserController extends Controller {
         str = str.substring(0, str.length() - 1);
         renderJson("[" + str + "]");
     }
+    @Before({Tx.class, LoginInterceptor.class})
     public void query() {
         renderJson(Db.paginate(
                 getParaToInt("pageCurrent"),
@@ -44,7 +45,7 @@ public class UserController extends Controller {
                         "OR department.name LIKE '%" + getPara("keyword") + "%' " +
                         "ORDER BY user.id DESC").getList());
     }
-
+    @Before({Tx.class, LoginInterceptor.class})
     public void total() {
         Long count = Db.queryLong("SELECT COUNT(*) FROM user LEFT JOIN department ON user.department_id = department.id " +
                 "WHERE user.name LIKE '%" + getPara("keyword") + "%' " +
@@ -56,7 +57,6 @@ public class UserController extends Controller {
     public void get() {
         renderJson(User.dao.findById(getPara("id")));
     }
-
     @Before({Tx.class, LoginInterceptor.class})
     public void delete() {
         User user = User.dao.findById(getPara("id"));
@@ -64,7 +64,6 @@ public class UserController extends Controller {
         logger.warn("function:" + this.getClass().getSimpleName() + "/Delete;" + ";time:" + new Date() + ";");
         renderText("OK");
     }
-
     @Before({Tx.class, LoginInterceptor.class})
     public void add() {
         User user = new User();
@@ -138,8 +137,11 @@ public class UserController extends Controller {
             renderText("0");
         }
     }
-
     @Before(LoginInterceptor.class)
+    public void name() {
+        renderText(((User) getSessionAttr("user")).getName());
+    }
+    @Before({Tx.class, LoginInterceptor.class})
     public void alt() {
         if (getSessionAttr("user").equals("") || getSessionAttr("user") == null) {
             renderText("无法识别用户");

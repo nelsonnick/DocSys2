@@ -44,9 +44,11 @@
         {{row.user}}
       </template>
       <template slot-scope="{ row, index }" slot="action" >
-        <Button type="primary" size="small" style="margin-right: 5px" @click="goPrintIn(index)" v-if="row.type.toString() === '存档 ' && row.department === department">打印存档</Button>
-        <Button type="success" size="small" style="margin-right: 5px"  @click="goPrintOut(index)" v-if="row.type.toString() === '提档' && row.department === department">打印提档</Button>
-        <Button type="success" size="small" style="margin-right: 5px"  @click="goPrintBorrow(index)" v-if="row.type.toString() === '借档' && row.department === department">打印借档</Button>
+        <Button type="primary" size="small" style="margin-right: 5px" @click="goEdit(index)" v-if="row.department === department">修改</Button>
+        <Button type="info" size="small" style="margin-right: 5px" @click="goPrintIn(index)" v-if="row.type.toString() === '重存' && row.department === department">打印存档</Button>
+        <Button type="info" size="small" style="margin-right: 5px" @click="goPrintIn(index)" v-if="row.type.toString() === '存档' && row.department === department">打印存档</Button>
+        <Button type="error" size="small" style="margin-right: 5px" @click="goPrintOut(index)" v-if="row.type.toString() === '提档' && row.department === department">打印提档</Button>
+        <Button type="warning" size="small" style="margin-right: 5px" @click="goPrintBorrow(index)" v-if="row.type.toString() === '借档' && row.department === department">打印借档</Button>
       </template>
     </Table>
     <Bottom
@@ -89,7 +91,8 @@ export default {
         },
         {
           title: '人员姓名',
-          slot: 'name'
+          slot: 'name',
+          width: 150
         },
         {
           title: '身份证号码',
@@ -97,7 +100,8 @@ export default {
         },
         {
           title: '流转类型',
-          slot: 'type'
+          slot: 'type',
+          width: 100
         },
         {
           title: '流转时间',
@@ -110,7 +114,8 @@ export default {
         },
         {
           title: '操作用户',
-          slot: 'user'
+          slot: 'user',
+          width: 150
         },
         {
           title: '操作',
@@ -172,6 +177,9 @@ export default {
     },
     goPrintBorrow (index) {
       window.location.href = API.printBorrow + '?id=' + this.pageList[index].id
+    },
+    goEdit (index) {
+      this.$router.push({ path: '/File/FlowEdit/' + this.pageList[index].id })
     },
     getUser () {
       axios.get(API.getUser

@@ -19,7 +19,7 @@ import java.util.Date;
  */
 public class DepartmentController extends Controller {
     private static Logger logger = Logger.getLogger(Department.class);
-
+    @Before({Tx.class, LoginInterceptor.class})
     public void query() {
         renderJson(Db.paginate(
                 getParaToInt("pageCurrent"),
@@ -31,7 +31,7 @@ public class DepartmentController extends Controller {
                         "OR department.address LIKE '%" + getPara("keyword") + "%' " +
                         "ORDER BY department.id DESC").getList());
     }
-
+    @Before({Tx.class, LoginInterceptor.class})
     public void total() {
         Long count = Db.queryLong("SELECT COUNT(*) FROM department " +
                 "WHERE department.name LIKE '%" + getPara("keyword") + "%' " +
@@ -39,11 +39,10 @@ public class DepartmentController extends Controller {
                 "OR department.address LIKE '%" + getPara("keyword") + "%' ");
         renderText(count.toString());
     }
-    @Before(LoginInterceptor.class)
+    @Before({Tx.class, LoginInterceptor.class})
     public void get() {
         renderJson(Department.dao.findById(getPara("id")));
     }
-
     @Before({Tx.class, LoginInterceptor.class})
     public void delete() {
         Department d = Department.dao.findById(getPara("id"));
@@ -51,7 +50,6 @@ public class DepartmentController extends Controller {
         logger.warn("function:" + this.getClass().getSimpleName() + "/Delete;" + ";time:" + new Date() + ";");
         renderText("OK");
     }
-
     @Before({Tx.class, LoginInterceptor.class})
     public void add() {
         Department department = new Department();
