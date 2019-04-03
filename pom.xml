@@ -143,6 +143,7 @@
                 <version>2.6</version>
                 <configuration>
                     <excludes>
+                        **/node_modules/**
                         <exclude>*.txt</exclude>
                         <exclude>*.xml</exclude>
                         <exclude>*.properties</exclude>

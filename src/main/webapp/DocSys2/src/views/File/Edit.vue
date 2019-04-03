@@ -175,10 +175,10 @@ export default {
           { required: true, message: '请输入联系地址', trigger: 'blur' }
         ],
         check: [
-          { required: true }
+          { required: true, message: '信息整理为必填项' }
         ],
         age: [
-          { required: true }
+          { required: true, message: '档案年龄为必填项' }
         ],
         retire: [
           { required: true, validator: validateRetire, trigger: 'blur' }
@@ -260,8 +260,8 @@ export default {
         this.formValidate.number = res.data.number
         this.formValidate.phone = res.data.phone
         this.formValidate.address = res.data.address
-        this.formValidate.check = res.data.check
-        this.formValidate.age = res.data.age
+        this.formValidate.check = res.data.check.toString()
+        this.formValidate.age = res.data.age.toString()
         this.formValidate.retire = res.data.retire
         this.formValidate.inside = res.data.inside
         this.formValidate.remark = res.data.remark

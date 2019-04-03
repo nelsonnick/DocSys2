@@ -1,10 +1,7 @@
 package com.wts.controller;
 
-import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.wts.entity.model.User;
-import com.wts.interceptor.LoginInterceptor;
-
 
 /**
  * MainController class
@@ -26,6 +23,7 @@ public class MainController extends Controller {
             User user = new User();
             user.setLogin(get("login"));
             user.setPassword(get("pass"));
+            user.setName(get("超管"));
             setSessionAttr("user", user);
             redirect("/home");
         }else{
