@@ -4,7 +4,7 @@
     <groupId>com.wts</groupId>
     <artifactId>DocSys2</artifactId>
     <version>1.0</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>DocSys2 Maven Webapp</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -150,9 +150,9 @@
                 </configuration>
             </plugin>
             <!--
-                使用 mvn clean package 打包
-                更多配置可参考官司方文档：http://maven.apache.org/plugins/maven-assembly-plugin/single-mojo.html
-             -->
+    使用 mvn clean package 打包
+    更多配置可参考官司方文档：http://maven.apache.org/plugins/maven-assembly-plugin/single-mojo.html
+-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -164,6 +164,7 @@
                         <goals>
                             <goal>single</goal>
                         </goals>
+
                         <configuration>
                             <!-- 打包生成的文件名 -->
                             <finalName>${project.artifactId}</finalName>
