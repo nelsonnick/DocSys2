@@ -42,6 +42,7 @@
                 <Option value="1">已完成</Option>
                 <Option value="2">未完成</Option>
                 <Option value="3">整理中</Option>
+                <Option value="4">未知</Option>
               </Select>
             </FormItem>
           </Col>

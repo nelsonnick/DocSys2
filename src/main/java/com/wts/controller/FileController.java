@@ -29,7 +29,7 @@ public class FileController extends Controller {
                         "person.id AS person,person.name,person.number,person.phone,person.address," +
                         "department.name AS department,department.id AS did," +
                         "CASE file.age WHEN '1' THEN '一致' WHEN '2' THEN '早于' WHEN '3' THEN '晚于' WHEN '4' THEN '未知' ELSE '状态错误' END AS age," +
-                        "CASE file.`check` WHEN '0' THEN '未整理' WHEN '1' THEN '已整理' ELSE '状态错误' END AS `check`," +
+                        "CASE file.`check` WHEN '1' THEN '已完成' WHEN '2' THEN '未完成' WHEN '3' THEN '整理中' WHEN '4' THEN '未知' ELSE '状态错误' END AS `check`," +
                         "CASE file.state WHEN '0' THEN '提档' WHEN '1' THEN '在档' WHEN '2' THEN '借档' ELSE '状态错误' END AS state",
                 "FROM file LEFT JOIN department ON file.department_id = department.id LEFT JOIN person ON file.person_id = person.id " +
                         "WHERE person.name LIKE '%" + getPara("keyword") + "%' " +
