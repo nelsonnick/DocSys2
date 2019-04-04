@@ -64,6 +64,7 @@
                 <Option value="1">已完成</Option>
                 <Option value="2">未完成</Option>
                 <Option value="3">整理中</Option>
+                <Option value="4">未知</Option>
               </Select>
             </FormItem>
           </Col>
@@ -103,7 +104,7 @@
           </Col>
           <Col span="8">
             <FormItem>
-              <Button type="primary" @click="goSave('formValidate')" :disabled="dis">新增</Button>
+              <Button type="primary" @click="goCheck('formValidate')" :disabled="dis">新增</Button>
               <Button @click="goReset('formValidate')" style="margin-left: 8px" :disabled="dis">重置</Button>
               <Button type="dashed" style="margin-left: 8px" @click="goBack" :disabled="dis">返回</Button>
             </FormItem>
@@ -277,6 +278,33 @@ export default {
     },
     goBack () {
       this.$router.push({ path: '/File/List' })
+    },
+    goCheck (name) {
+      axios.get(API.check, {
+        params: {
+          number: this.formValidate.number
+        }
+      }).then(res => {
+        if (res.data === 'OK') {
+          this.goSave(name)
+        } else {
+          this.$Modal.confirm({
+            title: '警告',
+            content: '<p>当前人员在其他部门有在存档案！</p><p>确定要继续保存吗？</p>',
+            onOk: () => {
+              this.goSave(name)
+            },
+            onCancel: () => {
+              this.$Message.info('取消保存')
+            }
+          })
+        }
+      }).catch(res => {
+        this.$Loading.error()
+        this.$Notice.error({
+          title: '服务器内部错误，无法检测身份证号码!'
+        })
+      })
     }
   }
 }

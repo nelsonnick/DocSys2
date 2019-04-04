@@ -229,5 +229,12 @@ public class FileController extends Controller {
     public void getUser() {
         renderText(Department.dao.findById(((User) getSessionAttr("user")).getDepartmentId()).getName());
     }
-
+    @Before({Tx.class, LoginInterceptor.class})
+    public void check() {
+        if (Db.find("SELECT person.number FROM file LEFT JOIN person ON file.person_id = person.id WHERE (file.state = 1 OR file.state = 2) AND person.number ="+get("number")).size() == 0){
+            renderText("OK");
+        }else{
+            renderText("EXIST");
+        }
+    }
 }

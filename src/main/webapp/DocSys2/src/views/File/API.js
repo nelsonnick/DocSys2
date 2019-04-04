@@ -17,3 +17,4 @@ export const back = `${base}/back`
 export const out = `${base}/out`
 export const resave = `${base}/resave`
 export const getUser = `${base}/getUser`
+export const check = `${base}/check`
