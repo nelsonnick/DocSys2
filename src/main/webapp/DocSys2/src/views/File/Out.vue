@@ -5,7 +5,8 @@
       <BreadcrumbItem>提取档案</BreadcrumbItem>
     </Breadcrumb>
     <Content :style="{padding: '24px', minHeight: '500px', background: '#fff'}">
-      <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
+      <!--<Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">-->
+      <Form ref="formValidate" :model="formValidate" :label-width="80">
         <Row>
           <Col span="8">
             <FormItem label="档案编号" prop="code">
