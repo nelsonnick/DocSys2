@@ -43,7 +43,8 @@
         <Button type="error" size="small" style="margin-right: 5px" @click="goOut(index)" v-if="row.state.toString() === '在档' && row.department === department">提档</Button>
         <Button type="warning" size="small" style="margin-right: 5px" @click="goBorrow(index)" v-if="row.state.toString() === '在档' && row.department === department">借档</Button>
         <Button type="info" size="small" style="margin-right: 5px" @click="goBack(index)" v-if="row.state.toString() === '借档' && row.department === department">还档</Button>
-        <Button type="dash" size="small" style="margin-right: 5px" @click="goResave(index)" v-if="row.state.toString() === '提档' && row.department === department">重存</Button>
+        <Button type="dash" size="small" style="margin-right: 5px" @click="goResave(index)" v-if="row.state.toString() === '提档' && row.department === department">重存A</Button>
+        <Button type="dash" size="small" style="margin-right: 5px" @click="goResaveOther(index)" v-if="row.state.toString() === '提档' && row.department !== department">重存B</Button>
       </template>
     </Table>
     <Bottom
@@ -170,6 +171,9 @@ export default {
     },
     goResave (index) {
       this.$router.push({ path: '/File/Resave/' + this.pageList[index].id })
+    },
+    goResaveOther (index) {
+      this.$router.push({ path: '/File/ResaveOther/' + this.pageList[index].id })
     },
     getUser () {
       axios.get(API.getUser

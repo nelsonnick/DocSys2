@@ -231,10 +231,47 @@ public class FileController extends Controller {
     }
     @Before({Tx.class, LoginInterceptor.class})
     public void check() {
+        System.out.println(11);
         if (Db.find("SELECT person.number FROM file LEFT JOIN person ON file.person_id = person.id WHERE (file.state = 1 OR file.state = 2) AND person.number ="+get("number")).size() == 0){
+
+            System.out.println(22);
             renderText("OK");
+
         }else{
+            System.out.println(33);
             renderText("EXIST");
+
         }
     }
+    @Before({Tx.class, LoginInterceptor.class})
+    public void resaveOther() {
+        File file = File.dao.findById(get("id"));
+        if (file == null) {
+            renderText("要流转的档案不存在！");
+        } else {
+            File f = new File();
+            f.set("code",get("code"))
+                    .set("person_id",file.get("person_id"))
+                    .set("state",1)
+                    .set("department_id", ((User) getSessionAttr("user")).get("department_id"))
+                    .set("age",get("age"))
+                    .set("state",1)
+                    .set("check",get("check"))
+                    .set("inside",get("inside"))
+                    .set("retire",get("retire"))
+                    .set("remark",get("remark"))
+                    .save();
+            Flow flow = new Flow();
+            flow.set("reason",get("reason"))
+                    .set("type",5)
+                    .set("source",get("source"))
+                    .set("delivery",get("delivery"))
+                    .set("source",get("source"))
+                    .set("time",new Date())
+                    .set("file_id",f.get("id"))
+                    .set("user_id", ((User) getSessionAttr("user")).get("id")).save();
+            renderText("OK");
+        }
+    }
+
 }

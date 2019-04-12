@@ -18,3 +18,4 @@ export const out = `${base}/out`
 export const resave = `${base}/resave`
 export const getUser = `${base}/getUser`
 export const check = `${base}/check`
+export const resaveother = `${base}/resaveOther`

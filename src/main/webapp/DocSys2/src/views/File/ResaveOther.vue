@@ -2,10 +2,11 @@
   <div>
     <Breadcrumb :style="{margin: '24px 0'}">
       <BreadcrumbItem>档案管理</BreadcrumbItem>
-      <BreadcrumbItem>新增档案</BreadcrumbItem>
+      <BreadcrumbItem>重存档案</BreadcrumbItem>
     </Breadcrumb>
     <Content :style="{padding: '24px', minHeight: '500px', background: '#fff'}">
-      <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
+      <!--<Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">-->
+      <Form ref="formValidate" :model="formValidate" :label-width="80">
         <Row>
           <Col span="8">
             <FormItem label="档案编号" prop="code">
@@ -14,35 +15,35 @@
           </Col>
           <Col span="8">
             <FormItem label="人员姓名" prop="name">
-              <Input type="text" v-model="formValidate.name" placeholder="请输入姓名" :maxlength="20"></Input>
+              <Input type="text" v-model="formValidate.name" placeholder="请输入姓名" :maxlength="20" disabled></Input>
             </FormItem>
           </Col>
           <Col span="8">
             <FormItem label="证件号码" prop="number">
-              <Input v-model="formValidate.number" placeholder="请输入18位身份证号码" :maxlength="18"></Input>
+              <Input v-model="formValidate.number" placeholder="请输入18位身份证号码" :maxlength="18" disabled></Input>
             </FormItem>
           </Col>
         </Row>
         <Row>
           <Col span="8">
             <FormItem label="联系电话" prop="phone">
-              <Input v-model="formValidate.phone" placeholder="请输入11位手机号码" :maxlength="11"></Input>
+              <Input v-model="formValidate.phone" placeholder="请输入11位手机号码" :maxlength="11" disabled></Input>
             </FormItem>
           </Col>
           <Col span="16">
             <FormItem label="联系地址" prop="address">
-              <Input v-model="formValidate.address" placeholder="请输入联系地址"></Input>
+              <Input v-model="formValidate.address" placeholder="请输入联系地址" disabled></Input>
             </FormItem>
           </Col>
         </Row>
         <Row>
           <Col span="8">
-            <FormItem label="存档原因" prop="reason">
-              <Input v-model="formValidate.reason" placeholder="请输入存档原因"></Input>
+            <FormItem label="重存原因" prop="reason">
+              <Input v-model="formValidate.reason" placeholder="请输入重存原因"></Input>
             </FormItem>
           </Col>
           <Col span="8">
-            <FormItem label="档案来源" prop="source" >
+            <FormItem label="档案来源" prop="source">
               <Input v-model="formValidate.source" placeholder="请输入档案来源"></Input>
             </FormItem>
           </Col>
@@ -60,7 +61,7 @@
         <Row>
           <Col span="8">
             <FormItem label="信息整理" prop="check">
-              <Select v-model="formValidate.check" placeholder="请选择信息整理情况">
+              <Select v-model="formValidate.check" placeholder="请选择信息整理情况" >
                 <Option value="1">已完成</Option>
                 <Option value="2">未完成</Option>
                 <Option value="3">整理中</Option>
@@ -70,7 +71,7 @@
           </Col>
           <Col span="8">
             <FormItem label="档案年龄" prop="age">
-              <Select v-model="formValidate.age" placeholder="请选择档案年龄">
+              <Select v-model="formValidate.age" placeholder="请选择档案年龄" >
                 <Option value="1">与身份证一致</Option>
                 <Option value="2">早于身份证</Option>
                 <Option value="3">晚于身份证</Option>
@@ -80,21 +81,23 @@
           </Col>
           <Col span="8">
             <FormItem label="退休年月" prop="retire">
-              <Input v-model="formValidate.retire" placeholder="请输入6位退休年月" :maxlength="6"></Input>
+              <Input v-model="formValidate.retire" placeholder="请输入6位退休年月" :maxlength="6" ></Input>
             </FormItem>
           </Col>
         </Row>
         <Row>
           <Col span="24">
             <FormItem label="档案材料" prop="inside">
-              <Input v-model="formValidate.inside" type="textarea" :autosize="{minRows: 2,maxRows: 2}" placeholder="如有必要，请输入档案所含材料"></Input>
+              <Input v-model="formValidate.inside" type="textarea" :autosize="{minRows: 2,maxRows: 2}"
+                     placeholder="如有必要，请输入档案所含材料"></Input>
             </FormItem>
           </Col>
         </Row>
         <Row>
           <Col span="24">
             <FormItem label="备注信息" prop="remark">
-              <Input v-model="formValidate.remark" type="textarea" :autosize="{minRows: 2,maxRows: 2}" placeholder="如有必要，请输入备注信息"></Input>
+              <Input v-model="formValidate.remark" type="textarea" :autosize="{minRows: 2,maxRows: 2}"
+                     placeholder="如有必要，请输入备注信息"></Input>
             </FormItem>
           </Col>
         </Row>
@@ -104,7 +107,7 @@
           </Col>
           <Col span="8">
             <FormItem>
-              <Button type="primary" @click="goCheck('formValidate')" :disabled="dis">新增</Button>
+              <Button type="primary" @click="goSave('formValidate')" :disabled="dis">重存</Button>
               <Button @click="goReset('formValidate')" style="margin-left: 8px" :disabled="dis">重置</Button>
               <Button type="dashed" style="margin-left: 8px" @click="goBack" :disabled="dis">返回</Button>
             </FormItem>
@@ -117,6 +120,7 @@
     </Content>
   </div>
 </template>
+
 <script>
 import * as API from './API.js'
 import axios from 'axios'
@@ -199,7 +203,7 @@ export default {
           { required: true, message: '请输入联系地址', trigger: 'blur' }
         ],
         reason: [
-          { required: true, message: '存档原因为必填项', trigger: 'blur' }
+          { required: true, message: '还档原因为必填项', trigger: 'blur' }
         ],
         source: [
           { required: true, message: '档案来源为必填项', trigger: 'blur' }
@@ -219,19 +223,23 @@ export default {
       }
     }
   },
+  created: function () {
+    this.fetchData(this.$route.params.id)
+  },
+  watch: {
+    // 如果路由有变化，会再次执行该方法
+    '$route': 'fetchData'
+  },
   methods: {
     goSave (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
           this.dis = true
           this.$Loading.start()
-          axios.get(API.add, {
+          axios.get(API.resaveother, {
             params: {
-              code: this.formValidate.code,
-              name: this.formValidate.name,
-              number: this.formValidate.number,
-              phone: this.formValidate.phone,
-              address: this.formValidate.address,
+              id: this.$route.params.id,
+              code: this.$route.params.code,
               reason: this.formValidate.reason,
               source: this.formValidate.source,
               delivery: this.formValidate.delivery,
@@ -244,10 +252,10 @@ export default {
           }).then(res => {
             if (res.data === 'OK') {
               this.$Loading.finish()
-              this.$Message.success('新增成功!')
+              this.$Message.success('重存成功!')
               this.$Notice.success({
                 title: '操作完成!',
-                desc: '档案：' + this.formValidate.code + '已保存！'
+                desc: '档案：' + this.formValidate.code + '已重存！'
               })
               setTimeout(() => {
                 this.$router.push({ path: '/File/List' })
@@ -273,36 +281,23 @@ export default {
         }
       })
     },
-    goReset (name) {
-      this.$refs[name].resetFields()
+    goReset () {
+      this.fetchData(this.$route.params.id)
     },
     goBack () {
       this.$router.push({ path: '/File/List' })
     },
-    goCheck (name) {
-      axios.get(API.check, {
-        params: {
-          number: this.formValidate.number
-        }
-      }).then(res => {
-        if (res.data === 'OK') {
-          this.goSave(name)
-        } else {
-          this.$Modal.confirm({
-            title: '警告',
-            content: '<p>当前人员在其他部门有在存档案！</p><p>确定要继续保存吗？</p>',
-            onOk: () => {
-              this.goSave(name)
-            },
-            onCancel: () => {
-              this.$Message.info('取消保存')
-            }
-          })
-        }
+    fetchData (id) {
+      axios.get(API.get,
+        { params: { id: id } }
+      ).then(res => {
+        this.formValidate.name = res.data.name
+        this.formValidate.number = res.data.number
+        this.formValidate.phone = res.data.phone
+        this.formValidate.address = res.data.address
       }).catch(res => {
-        this.$Loading.error()
         this.$Notice.error({
-          title: '服务器内部错误，无法检测身份证号码!'
+          title: '服务器内部错误，无法获取数据!'
         })
       })
     }

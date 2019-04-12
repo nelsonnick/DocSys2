@@ -45,6 +45,10 @@ export default new Router({
           component: () => import(/* webpackChunkName: "group-file" */ './views/File/Resave.vue')
         },
         {
+          path: 'ResaveOther/:id',
+          component: () => import(/* webpackChunkName: "group-file" */ './views/File/ResaveOther.vue')
+        },
+        {
           path: 'Borrow/:id',
           component: () => import(/* webpackChunkName: "group-file" */ './views/File/Borrow.vue')
         },
