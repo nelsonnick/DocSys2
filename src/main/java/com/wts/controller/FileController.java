@@ -142,7 +142,7 @@ public class FileController extends Controller {
                         .set("check",get("check"))
                         .set("inside",get("inside"))
                         .set("remark",get("remark"))
-                        .set("retire",get("retrie"))
+                        .set("retire",get("retire"))
                         .update();
             }
             logger.warn("function:" + this.getClass().getSimpleName() + "/Edit;" + ";time:" + new Date() + ";");
