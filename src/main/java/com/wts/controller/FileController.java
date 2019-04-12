@@ -90,29 +90,36 @@ public class FileController extends Controller {
             }
         }else{
             Person person = Person.dao.findFirst("SELECT * FROM person WHERE number="+get("number"));
-            if(File.dao.find("SELECT * FROM file WHERE code="+get("code")+" AND department_id=" +((User) getSessionAttr("user")).get("department_id")).size() ==0){
-                File file = new File();
-                file.set("code",get("code"))
-                        .set("age",get("age"))
-                        .set("state",1)
-                        .set("check",get("check"))
-                        .set("inside",get("inside"))
-                        .set("retire",get("retire"))
-                        .set("remark",get("remark"))
-                        .set("person_id",person.get("id").toString())
-                        .set("department_id", ((User) getSessionAttr("user")).get("department_id")).save();
-                Flow flow = new Flow();
-                flow.set("reason",get("reason"))
-                        .set("type",1)
-                        .set("source",get("source"))
-                        .set("delivery",get("delivery"))
-                        .set("source",get("source"))
-                        .set("time",new Date())
-                        .set("file_id",file.get("id"))
-                        .set("user_id", ((User) getSessionAttr("user")).get("id")).save();
-                renderText("OK");
-            }else{
+            if(File.dao.find("SELECT * FROM file WHERE code="+get("code")+" AND department_id=" +((User) getSessionAttr("user")).get("department_id")).size() !=0){
                 renderText("该档案编号在当前部门已存在");
+            }else{
+                Long count = Db.queryLong("SELECT COUNT(*) FROM file " +
+                        " WHERE (file.state = 1 OR file.state = 2) AND file.person_id = " + person.get("id") +
+                        " AND file.department_id=" +((User) getSessionAttr("user")).get("department_id"));
+                if (!count.toString().equals("0")) {
+                    renderText("本单位已存在该人员档案！");
+                }else {
+                    File file = new File();
+                    file.set("code", get("code"))
+                            .set("age", get("age"))
+                            .set("state", 1)
+                            .set("check", get("check"))
+                            .set("inside", get("inside"))
+                            .set("retire", get("retire"))
+                            .set("remark", get("remark"))
+                            .set("person_id", person.get("id").toString())
+                            .set("department_id", ((User) getSessionAttr("user")).get("department_id")).save();
+                    Flow flow = new Flow();
+                    flow.set("reason", get("reason"))
+                            .set("type", 1)
+                            .set("source", get("source"))
+                            .set("delivery", get("delivery"))
+                            .set("source", get("source"))
+                            .set("time", new Date())
+                            .set("file_id", file.get("id"))
+                            .set("user_id", ((User) getSessionAttr("user")).get("id")).save();
+                    renderText("OK");
+                }
             }
         }
     }
@@ -231,17 +238,8 @@ public class FileController extends Controller {
     }
     @Before({Tx.class, LoginInterceptor.class})
     public void check() {
-        System.out.println(11);
-        if (Db.find("SELECT person.number FROM file LEFT JOIN person ON file.person_id = person.id WHERE (file.state = 1 OR file.state = 2) AND person.number ="+get("number")).size() == 0){
-
-            System.out.println(22);
-            renderText("OK");
-
-        }else{
-            System.out.println(33);
-            renderText("EXIST");
-
-        }
+        Long count = Db.queryLong("SELECT COUNT(*) FROM file LEFT JOIN person ON file.person_id = person.id WHERE (file.state = 1 OR file.state = 2) AND person.number ='"+get("number")+"'");
+        renderText(count.toString());
     }
     @Before({Tx.class, LoginInterceptor.class})
     public void resaveOther() {
@@ -249,28 +247,35 @@ public class FileController extends Controller {
         if (file == null) {
             renderText("要流转的档案不存在！");
         } else {
-            File f = new File();
-            f.set("code",get("code"))
-                    .set("person_id",file.get("person_id"))
-                    .set("state",1)
-                    .set("department_id", ((User) getSessionAttr("user")).get("department_id"))
-                    .set("age",get("age"))
-                    .set("state",1)
-                    .set("check",get("check"))
-                    .set("inside",get("inside"))
-                    .set("retire",get("retire"))
-                    .set("remark",get("remark"))
-                    .save();
-            Flow flow = new Flow();
-            flow.set("reason",get("reason"))
-                    .set("type",5)
-                    .set("source",get("source"))
-                    .set("delivery",get("delivery"))
-                    .set("source",get("source"))
-                    .set("time",new Date())
-                    .set("file_id",f.get("id"))
-                    .set("user_id", ((User) getSessionAttr("user")).get("id")).save();
-            renderText("OK");
+            Long count = Db.queryLong("SELECT COUNT(*) FROM file " +
+                    " WHERE (file.state = 1 OR file.state = 2) AND file.person_id = " + file.get("person_id") +
+                    " AND file.department_id=" +((User) getSessionAttr("user")).get("department_id"));
+            if (!count.toString().equals("0")) {
+                renderText("本单位已存在该人员档案！");
+            }else{
+                File f = new File();
+                f.set("code",get("code"))
+                        .set("person_id",file.get("person_id"))
+                        .set("state",1)
+                        .set("department_id", ((User) getSessionAttr("user")).get("department_id"))
+                        .set("age",get("age"))
+                        .set("state",1)
+                        .set("check",get("check"))
+                        .set("inside",get("inside"))
+                        .set("retire",get("retire"))
+                        .set("remark",get("remark"))
+                        .save();
+                Flow flow = new Flow();
+                flow.set("reason",get("reason"))
+                        .set("type",1)
+                        .set("source",get("source"))
+                        .set("delivery",get("delivery"))
+                        .set("source",get("source"))
+                        .set("time",new Date())
+                        .set("file_id",f.get("id"))
+                        .set("user_id", ((User) getSessionAttr("user")).get("id")).save();
+                renderText("OK");
+            }
         }
     }
 

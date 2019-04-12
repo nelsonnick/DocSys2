@@ -285,7 +285,7 @@ export default {
           number: this.formValidate.number
         }
       }).then(res => {
-        if (res.data === 'OK') {
+        if (res.data === '0') {
           this.goSave(name)
         } else {
           this.$Modal.confirm({

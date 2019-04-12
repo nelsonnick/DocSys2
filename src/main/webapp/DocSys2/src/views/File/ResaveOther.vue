@@ -239,7 +239,7 @@ export default {
           axios.get(API.resaveother, {
             params: {
               id: this.$route.params.id,
-              code: this.$route.params.code,
+              code: this.formValidate.code,
               reason: this.formValidate.reason,
               source: this.formValidate.source,
               delivery: this.formValidate.delivery,
