@@ -57,13 +57,13 @@ public class FileController extends Controller {
     }
     @Before({Tx.class, LoginInterceptor.class})
     public void add() {
-        if (Person.dao.find("SELECT * FROM person WHERE number="+get("number")).size() == 0){
+        if (Person.dao.find("SELECT * FROM person WHERE number='"+get("number")+"'").size() == 0){
             Person person = new Person();
             person.set("name",get("name"))
                     .set("number",get("number"))
                     .set("phone",get("phone"))
                     .set("address",get("address"));
-            if(File.dao.find("SELECT * FROM file WHERE code="+get("code")+" AND department_id=" +((User) getSessionAttr("user")).get("department_id")).size() ==0){
+            if(File.dao.find("SELECT * FROM file WHERE code='"+get("code")+"' AND department_id=" +((User) getSessionAttr("user")).get("department_id")).size() ==0){
                 person.save();
                 File file = new File();
                 file.set("code",get("code"))
@@ -89,8 +89,8 @@ public class FileController extends Controller {
                 renderText("该档案编号在当前部门已存在");
             }
         }else{
-            Person person = Person.dao.findFirst("SELECT * FROM person WHERE number="+get("number"));
-            if(File.dao.find("SELECT * FROM file WHERE code="+get("code")+" AND department_id=" +((User) getSessionAttr("user")).get("department_id")).size() !=0){
+            Person person = Person.dao.findFirst("SELECT * FROM person WHERE number='"+get("number")+"'");
+            if(File.dao.find("SELECT * FROM file WHERE code='"+get("code")+"' AND department_id=" +((User) getSessionAttr("user")).get("department_id")).size() !=0){
                 renderText("该档案编号在当前部门已存在");
             }else{
                 Long count = Db.queryLong("SELECT COUNT(*) FROM file " +
